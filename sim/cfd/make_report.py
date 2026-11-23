@@ -142,7 +142,8 @@ for k in ("no_drone", "quad_z30", "heavy_z60", "heavy_z90"):
 A("\n![mixing](figures/mixing_timeseries.png)\n![mixing field](figures/mixing_field_heavy_z60.png)\n")
 A("**Reading it.** Heavy drones hovering inside the inversion pull cleaner air down from aloft and stir the "
   "stagnant surface layer. The maximum possible gain is set by how much cleaner the air aloft is (here: "
-  "full mixing of 0–100 m gives 25 %). With wind exchanging the zone's air every 500 m / U, the steady "
+  "full mixing of 0–100 m gives 25 %). Hovering at 60 m acts within 5–10 min; at 90 m the drones "
+  "draw the cleanest air but their jets need ~15 min to reach the ground. With wind exchanging the zone's air every 500 m / U, the steady "
   "benefit is roughly the 30-min value × τ_adv/(τ_adv + τ_mix): about 3/4 of it at 0.3 m/s, about half at 1 m/s.\n")
 A("**Energy.** Theoretical minimum to erase a 5 K / 100 m inversion is ≈ 180 J/m² (12 kWh for 25 ha). "
   "100 heavy drones draw ≈ 0.68 MW while airborne (≈ 150 airframes to keep 100 flying), i.e. ~5 MWh per "
@@ -170,8 +171,8 @@ if s3d:
           f"{r['w_supply']} | {f(r['Q_m3s'], 1)} | **{f(r['reduction_pct'], 0)} %** | {f(r['fan_kW'], 1)} |")
 sh2 = [r for r in twod.values() if r["case"].startswith("shelter") and r["w_supply"] > 0]
 if sh2:
-    A(f"\n**2-D cross-section (wind perpendicular, ends sealed):** every case with any supply gave "
-      f"{f(min(r['reduction_pct'] for r in sh2), 0)}–{f(max(r['reduction_pct'] for r in sh2), 0)} % "
+    A(f"\n**2-D cross-section (wind perpendicular, ends sealed):** every case with any supply (0.25–1 m/s, "
+      f"wind 0.5–2 m/s, from front or back) gave ≈ {f(min(r['reduction_pct'] for r in sh2), 0)} % "
       "(the shelter fills with supply air). This is the best case and over-states real protection: steady RANS "
       "under-predicts turbulent exchange in sheltered pockets.\n")
 A("![shelter](figures/shelter.png)\n")

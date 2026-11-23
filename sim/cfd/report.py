@@ -74,10 +74,11 @@ def drones():
             else:
                 axs[1, c].text(0.5, 0.5, "no filter:\nPM unchanged", ha="center", va="center",
                                transform=axs[1, c].transAxes, color=INK2)
+                axs[1, c].set_axis_off()
             title = {"none": "open rotors (no filter)", "above": "ducted filter ABOVE rotors",
                      "below": "ducted filter BELOW rotors"}[fpos]
             axs[0, c].set_title(title, color=INK)
-            for ax in axs[:, c]:
+            for ax in (axs[:, c] if pm is not None else axs[:1, c]):
                 ax.set_aspect("equal")
                 ax.set_xlabel("x (m)")
                 ax.set_ylabel("z (m)")
@@ -145,18 +146,36 @@ def two_d():
     for p in glob.glob(os.path.join(RUNS, "2d", "summary_*.json")):
         for r in json.load(open(p)):
             out[r["case"]] = r
-    sh = [r for r in out.values() if r["case"].startswith("shelter") and "error" not in r]
-    if sh:
-        fig, axs = plt.subplots(1, 2, figsize=(9, 3.4), constrained_layout=True, sharey=True)
-        for ax, wf in zip(axs, ("front", "back")):
-            for i, U in enumerate((0.5, 1.0, 2.0)):
-                pts = sorted((r["w_supply"], r["reduction_pct"]) for r in sh if r["wind_from"] == wf and r["Uref"] == U)
-                if pts:
-                    ax.plot(*zip(*pts), color=CAT[i], marker="o", ms=5, label=f"wind {U} m/s @10 m")
-            ax.set_title(f"wind {'into opening' if wf == 'front' else 'over back wall'}", color=INK)
-            ax.set_xlabel("filtered supply velocity from roof (m/s)")
-        axs[0].set_ylabel("breathing-zone PM reduction (%)")
-        axs[1].legend()
+    s3 = load_json(os.path.join(RUNS, "shelter3d", "summary.json")) or []
+    s3 = [r for r in s3 if "error" not in r]
+    if s3:
+        fig, axs = plt.subplots(1, 2, figsize=(10, 3.6), constrained_layout=True, gridspec_kw=dict(width_ratios=[1, 1.6]))
+        ax = axs[0]
+        par = sorted((r["w_supply"], r["reduction_pct"]) for r in s3 if r["wind"] == "parallel" and r["Uref"] == 1.0)
+        ax.plot(*zip(*par), color=CAT[0], marker="o", ms=6, label="wind 1 m/s along shelter")
+        for r in s3:
+            if r["wind"] == "parallel" and r["Uref"] == 2.0:
+                ax.plot(r["w_supply"], r["reduction_pct"], "s", color=CAT[1], ms=7, label="wind 2 m/s along shelter")
+            if r["wind"] == "into":
+                ax.plot(r["w_supply"], r["reduction_pct"], "^", color=CAT[2], ms=7, label="wind 1 m/s into open front")
+        ax.set_xlabel("filtered supply velocity from roof (m/s)")
+        ax.set_ylabel("breathing-zone PM reduction (%)")
+        ax.set_ylim(0, 100)
+        ax.legend(loc="lower right")
+        ax.set_title("3-D bus shelter, open ends", color=INK)
+        vt = glob.glob(os.path.join(RUNS, "shelter3d", "s3d_U1.0_w0.5_parallel", "VTK_full", "*", "internal.vtu"))
+        if vt:
+            pts, T = slice_plane(vt[0], "z", (0, 0, 1.2), "T")
+            m = (pts[:, 0] > -4) & (pts[:, 0] < 14) & (pts[:, 1] > -3) & (pts[:, 1] < 5)
+            c = axs[1].tricontourf(pts[m, 0], pts[m, 1], 100 * (1 - T[m]), levels=np.linspace(0, 100, 11), cmap=SEQ, extend="both")
+            axs[1].add_patch(plt.Rectangle((0, 0), 8, 2.6, fill=False, ec=INK, lw=1))
+            axs[1].plot([0, 8], [2.55, 2.55], color=INK, lw=3)
+            axs[1].set_aspect("equal")
+            axs[1].grid(False)
+            axs[1].set_title("PM reduction at 1.2 m height (supply 0.5 m/s, wind → along x)", color=INK)
+            axs[1].set_xlabel("x (m)")
+            axs[1].set_ylabel("y (m)")
+            fig.colorbar(c, ax=axs[1], label="PM reduction (%)", shrink=0.8)
         fig.savefig(os.path.join(FIG, "shelter.png"), dpi=150)
         plt.close(fig)
     es = [r for r in out.values() if r["case"].startswith("espfence") and "error" not in r]
@@ -172,6 +191,9 @@ def two_d():
                 ax.plot(xs, [100 * (1 - v) for v in r["pedestrian_C"].values()], color=CAT[0 if U == 1.0 else 1],
                         ls=ls, marker="o", ms=4, label=f"{'PM2.5' if size == 'PM25' else 'coarse PM'}, {U} m/s")
         ax.set_xscale("log")
+        ax.set_xticks([2, 5, 10, 20, 40, 80])
+        ax.set_xticklabels(["2", "5", "10", "20", "40", "80"])
+        ax.minorticks_off()
         ax.set_xlabel("distance downwind of 6 m ESP fence (m)")
         ax.set_ylabel("PM reduction at 1-2 m height (%)")
         ax.legend()
