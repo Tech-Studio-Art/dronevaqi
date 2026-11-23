@@ -1,0 +1,255 @@
+{
+ "vehicles": {
+  "per_bus": [
+   {
+    "speed_kmh": 15,
+    "ram_Pa": 8.680555555555557,
+    "intake_U": 1.03568494860246,
+    "Q": 0.414273979440984,
+    "eff_PM25": 0.245420097035461,
+    "eff_PM10coarse": 0.6681791114868535,
+    "CADR_PM25": 0.10167116023367287,
+    "CADR_PM10": 0.1717263839382036
+   },
+   {
+    "speed_kmh": 25,
+    "ram_Pa": 24.112654320987655,
+    "intake_U": 2.477395307129413,
+    "Q": 0.9909581228517652,
+    "eff_PM25": 0.15342615439892382,
+    "eff_PM10coarse": 0.7273267456460876,
+    "CADR_PM25": 0.15203889395952264,
+    "CADR_PM10": 0.3795234750018457
+   },
+   {
+    "speed_kmh": 40,
+    "ram_Pa": 61.72839506172839,
+    "intake_U": 5.073473494350047,
+    "Q": 2.029389397740019,
+    "eff_PM25": 0.1166393270314419,
+    "eff_PM10coarse": 0.7842832118631102,
+    "CADR_PM25": 0.236706613637139,
+    "CADR_PM10": 0.7786703821744774
+   }
+  ],
+  "corridor": [
+   {
+    "buses_on_1km": 5,
+    "PM25_reduction_pct": 0.004406730261320972
+   },
+   {
+    "buses_on_1km": 20,
+    "PM25_reduction_pct": 0.017624591040723413
+   },
+   {
+    "buses_on_1km": 60,
+    "PM25_reduction_pct": 0.05285514211688604
+   }
+  ],
+  "fleet_note": "Delhi city-bus fleet ~7,000-8,000 buses (order of magnitude)."
+ },
+ "charged_mist": {
+  "drops": [
+   {
+    "D_um": 50.0,
+    "mode": "uncharged",
+    "q_over_m_mC_per_kg": 0,
+    "E_PM25": 0.008293678301775123,
+    "E_coarse": 0.10060192859762086,
+    "fall_m_s": 0.07644926264044945,
+    "life_s_RH85": 6.788104028179385,
+    "fall_before_evap_m": 0.25947277384048933
+   },
+   {
+    "D_um": 50.0,
+    "mode": "charged drop, ambient Boltzmann particles",
+    "q_over_m_mC_per_kg": 5.748684886128304,
+    "E_PM25": 0.4673776146851923,
+    "E_coarse": 0.25632513136983376,
+    "fall_m_s": 0.07644926264044945,
+    "life_s_RH85": 6.788104028179385,
+    "fall_before_evap_m": 0.25947277384048933
+   },
+   {
+    "D_um": 50.0,
+    "mode": "charged drop + pre-charged particles (Ni t=1e13)",
+    "q_over_m_mC_per_kg": 5.748684886128304,
+    "E_PM25": 1.0,
+    "E_coarse": 1.0,
+    "fall_m_s": 0.07644926264044945,
+    "life_s_RH85": 6.788104028179385,
+    "fall_before_evap_m": 0.25947277384048933
+   },
+   {
+    "D_um": 100.0,
+    "mode": "uncharged",
+    "q_over_m_mC_per_kg": 0,
+    "E_PM25": 0.002952916553733733,
+    "E_coarse": 0.2316008605296911,
+    "fall_m_s": 0.4,
+    "life_s_RH85": 27.15241611271754,
+    "fall_before_evap_m": 5.430483222543508
+   },
+   {
+    "D_um": 100.0,
+    "mode": "charged drop, ambient Boltzmann particles",
+    "q_over_m_mC_per_kg": 2.0324670329429697,
+    "E_PM25": 0.10465130197972393,
+    "E_coarse": 0.2526459918038673,
+    "fall_m_s": 0.4,
+    "life_s_RH85": 27.15241611271754,
+    "fall_before_evap_m": 5.430483222543508
+   },
+   {
+    "D_um": 100.0,
+    "mode": "charged drop + pre-charged particles (Ni t=1e13)",
+    "q_over_m_mC_per_kg": 2.0324670329429697,
+    "E_PM25": 1.0,
+    "E_coarse": 1.0,
+    "fall_m_s": 0.4,
+    "life_s_RH85": 27.15241611271754,
+    "fall_before_evap_m": 5.430483222543508
+   },
+   {
+    "D_um": 200.0,
+    "mode": "uncharged",
+    "q_over_m_mC_per_kg": 0,
+    "E_PM25": 0.0014163076853542754,
+    "E_coarse": 0.24667362185129119,
+    "fall_m_s": 0.8,
+    "life_s_RH85": 108.60966445087016,
+    "fall_before_evap_m": 43.44386578034806
+   },
+   {
+    "D_um": 200.0,
+    "mode": "charged drop, ambient Boltzmann particles",
+    "q_over_m_mC_per_kg": 0.718585610766038,
+    "E_PM25": 0.03768389344240424,
+    "E_coarse": 0.25411419936875673,
+    "fall_m_s": 0.8,
+    "life_s_RH85": 108.60966445087016,
+    "fall_before_evap_m": 43.44386578034806
+   },
+   {
+    "D_um": 200.0,
+    "mode": "charged drop + pre-charged particles (Ni t=1e13)",
+    "q_over_m_mC_per_kg": 0.718585610766038,
+    "E_PM25": 0.7235545214755847,
+    "E_coarse": 0.9101003858363423,
+    "fall_m_s": 0.8,
+    "life_s_RH85": 108.60966445087016,
+    "fall_before_evap_m": 43.44386578034806
+   }
+  ],
+  "junction_box": [
+   {
+    "mode": "uncharged",
+    "water_L_per_h": 1000,
+    "PM25_red_pct": 0.013361351006611476,
+    "PM10_red_pct": 0.4229033010623956
+   },
+   {
+    "mode": "uncharged",
+    "water_L_per_h": 5000,
+    "PM25_red_pct": 0.06677106896547601,
+    "PM10_red_pct": 2.0318581872958257
+   },
+   {
+    "mode": "uncharged",
+    "water_L_per_h": 20000,
+    "PM25_red_pct": 0.26655034032720126,
+    "PM10_red_pct": 7.091623674392777
+   },
+   {
+    "mode": "charged drop, ambient Boltzmann particles",
+    "water_L_per_h": 1000,
+    "PM25_red_pct": 0.4713569868407663,
+    "PM10_red_pct": 0.7349744711841705
+   },
+   {
+    "mode": "charged drop, ambient Boltzmann particles",
+    "water_L_per_h": 5000,
+    "PM25_red_pct": 2.313171747603999,
+    "PM10_red_pct": 3.5509022133605224
+   },
+   {
+    "mode": "charged drop, ambient Boltzmann particles",
+    "water_L_per_h": 20000,
+    "PM25_red_pct": 8.652261953317504,
+    "PM10_red_pct": 12.63569637094677
+   },
+   {
+    "mode": "charged drop + pre-charged particles (Ni t=1e13)",
+    "water_L_per_h": 1000,
+    "PM25_red_pct": 4.329476442268454,
+    "PM10_red_pct": 4.329476442268454
+   },
+   {
+    "mode": "charged drop + pre-charged particles (Ni t=1e13)",
+    "water_L_per_h": 5000,
+    "PM25_red_pct": 18.451899622170668,
+    "PM10_red_pct": 18.45189962217067
+   },
+   {
+    "mode": "charged drop + pre-charged particles (Ni t=1e13)",
+    "water_L_per_h": 20000,
+    "PM25_red_pct": 47.5087808346839,
+    "PM10_red_pct": 47.5087808346839
+   }
+  ]
+ },
+ "coagulation": {
+  "initial_MMD_um": 0.47214179342519985,
+  "initial_number_per_cm3": 24764.175334563944,
+  "runs": [
+   {
+    "Ni_t": 0,
+    "mean_charge_0p5um": 0.0,
+    "1h": {
+     "mass_conservation": 0.9999708205251753,
+     "number_change_pct": -12.372557453292664,
+     "MMD_um": 0.47511538117171626,
+     "mass_above_2p5um_pct": 0.9782350900009482
+    },
+    "6h": {
+     "mass_conservation": 0.9998967707304611,
+     "number_change_pct": -42.17442469714319,
+     "MMD_um": 0.48966056671789954,
+     "mass_above_2p5um_pct": 0.9816891373592485
+    }
+   },
+   {
+    "Ni_t": 1000000000000.0,
+    "mean_charge_0p5um": 10.615089425291336,
+    "1h": {
+     "mass_conservation": 0.9998102769453828,
+     "number_change_pct": -13.976853951499656,
+     "MMD_um": 0.48378396842657584,
+     "mass_above_2p5um_pct": 0.98529930269986
+    },
+    "6h": {
+     "mass_conservation": 0.9991321997506415,
+     "number_change_pct": -48.010933762463736,
+     "MMD_um": 0.5374198361756009,
+     "mass_above_2p5um_pct": 1.0258989984709448
+    }
+   },
+   {
+    "Ni_t": 10000000000000.0,
+    "mean_charge_0p5um": 20.10395402265731,
+    "1h": {
+     "mass_conservation": 0.9982876580669349,
+     "number_change_pct": -29.919446398764705,
+     "MMD_um": 0.5130448820192093,
+     "mass_above_2p5um_pct": 0.9914728959377034
+    },
+    "6h": {
+     "mass_conservation": 0.9944903133460709,
+     "number_change_pct": -76.70575651992657,
+     "MMD_um": 0.6663293742928152,
+     "mass_above_2p5um_pct": 1.054521941132134
+    }
+   }
+  ]
+ }
+}

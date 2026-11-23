@@ -1,0 +1,354 @@
+[
+ {
+  "case": "shelter_U0.5_w0.0_front",
+  "Uref": 0.5,
+  "w_supply": 0.0,
+  "wind_from": "front",
+  "breathing_zone_C": 1.0,
+  "reduction_pct": 0.0,
+  "Q_per_m": 0.0,
+  "fan_W_per_m": 0.0
+ },
+ {
+  "case": "shelter_U0.5_w0.0_back",
+  "Uref": 0.5,
+  "w_supply": 0.0,
+  "wind_from": "back",
+  "breathing_zone_C": 1.0,
+  "reduction_pct": 0.0,
+  "Q_per_m": 0.0,
+  "fan_W_per_m": 0.0
+ },
+ {
+  "case": "shelter_U0.5_w0.25_front",
+  "Uref": 0.5,
+  "w_supply": 0.25,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05000000074505806,
+  "reduction_pct": 94.9999999254942,
+  "Q_per_m": 0.5,
+  "fan_W_per_m": 350.0
+ },
+ {
+  "case": "shelter_U0.5_w0.25_back",
+  "Uref": 0.5,
+  "w_supply": 0.25,
+  "wind_from": "back",
+  "breathing_zone_C": 0.050055150432894165,
+  "reduction_pct": 94.99448495671058,
+  "Q_per_m": 0.5,
+  "fan_W_per_m": 350.0
+ },
+ {
+  "case": "shelter_U0.5_w0.5_front",
+  "Uref": 0.5,
+  "w_supply": 0.5,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05001573265456094,
+  "reduction_pct": 94.99842673454391,
+  "Q_per_m": 1.0,
+  "fan_W_per_m": 700.0
+ },
+ {
+  "case": "shelter_U0.5_w0.5_back",
+  "Uref": 0.5,
+  "w_supply": 0.5,
+  "wind_from": "back",
+  "breathing_zone_C": 0.05007500070118676,
+  "reduction_pct": 94.99249992988132,
+  "Q_per_m": 1.0,
+  "fan_W_per_m": 700.0
+ },
+ {
+  "case": "shelter_U0.5_w1.0_front",
+  "Uref": 0.5,
+  "w_supply": 1.0,
+  "wind_from": "front",
+  "breathing_zone_C": 0.050033489281361115,
+  "reduction_pct": 94.9966510718639,
+  "Q_per_m": 2.0,
+  "fan_W_per_m": 1400.0
+ },
+ {
+  "case": "shelter_U0.5_w1.0_back",
+  "Uref": 0.5,
+  "w_supply": 1.0,
+  "wind_from": "back",
+  "breathing_zone_C": 0.0500671277040419,
+  "reduction_pct": 94.99328722959581,
+  "Q_per_m": 2.0,
+  "fan_W_per_m": 1400.0
+ },
+ {
+  "case": "shelter_U1.0_w0.0_front",
+  "Uref": 1.0,
+  "w_supply": 0.0,
+  "wind_from": "front",
+  "breathing_zone_C": 1.0,
+  "reduction_pct": 0.0,
+  "Q_per_m": 0.0,
+  "fan_W_per_m": 0.0
+ },
+ {
+  "case": "shelter_U1.0_w0.0_back",
+  "Uref": 1.0,
+  "w_supply": 0.0,
+  "wind_from": "back",
+  "breathing_zone_C": 1.0,
+  "reduction_pct": 0.0,
+  "Q_per_m": 0.0,
+  "fan_W_per_m": 0.0
+ },
+ {
+  "case": "shelter_U1.0_w0.25_front",
+  "Uref": 1.0,
+  "w_supply": 0.25,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05000000083389186,
+  "reduction_pct": 94.99999991661082,
+  "Q_per_m": 0.5,
+  "fan_W_per_m": 350.0
+ },
+ {
+  "case": "shelter_U1.0_w0.25_back",
+  "Uref": 1.0,
+  "w_supply": 0.25,
+  "wind_from": "back",
+  "breathing_zone_C": 0.050044604204986465,
+  "reduction_pct": 94.99553957950135,
+  "Q_per_m": 0.5,
+  "fan_W_per_m": 350.0
+ },
+ {
+  "case": "shelter_U1.0_w0.5_front",
+  "Uref": 1.0,
+  "w_supply": 0.5,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05000000074505806,
+  "reduction_pct": 94.9999999254942,
+  "Q_per_m": 1.0,
+  "fan_W_per_m": 700.0
+ },
+ {
+  "case": "shelter_U1.0_w0.5_back",
+  "Uref": 1.0,
+  "w_supply": 0.5,
+  "wind_from": "back",
+  "breathing_zone_C": 0.0500519393097983,
+  "reduction_pct": 94.99480606902017,
+  "Q_per_m": 1.0,
+  "fan_W_per_m": 700.0
+ },
+ {
+  "case": "shelter_U1.0_w1.0_front",
+  "Uref": 1.0,
+  "w_supply": 1.0,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05001540717890047,
+  "reduction_pct": 94.99845928210995,
+  "Q_per_m": 2.0,
+  "fan_W_per_m": 1400.0
+ },
+ {
+  "case": "shelter_U1.0_w1.0_back",
+  "Uref": 1.0,
+  "w_supply": 1.0,
+  "wind_from": "back",
+  "breathing_zone_C": 0.05007167833422982,
+  "reduction_pct": 94.99283216657702,
+  "Q_per_m": 2.0,
+  "fan_W_per_m": 1400.0
+ },
+ {
+  "case": "shelter_U2.0_w0.0_front",
+  "Uref": 2.0,
+  "w_supply": 0.0,
+  "wind_from": "front",
+  "breathing_zone_C": 1.0,
+  "reduction_pct": 0.0,
+  "Q_per_m": 0.0,
+  "fan_W_per_m": 0.0
+ },
+ {
+  "case": "shelter_U2.0_w0.0_back",
+  "Uref": 2.0,
+  "w_supply": 0.0,
+  "wind_from": "back",
+  "breathing_zone_C": 1.0,
+  "reduction_pct": 0.0,
+  "Q_per_m": 0.0,
+  "fan_W_per_m": 0.0
+ },
+ {
+  "case": "shelter_U2.0_w0.25_front",
+  "Uref": 2.0,
+  "w_supply": 0.25,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05168305099065842,
+  "reduction_pct": 94.83169490093417,
+  "Q_per_m": 0.5,
+  "fan_W_per_m": 350.0
+ },
+ {
+  "case": "shelter_U2.0_w0.25_back",
+  "Uref": 2.0,
+  "w_supply": 0.25,
+  "wind_from": "back",
+  "breathing_zone_C": 0.050002889891326126,
+  "reduction_pct": 94.99971101086739,
+  "Q_per_m": 0.5,
+  "fan_W_per_m": 350.0
+ },
+ {
+  "case": "shelter_U2.0_w0.5_front",
+  "Uref": 2.0,
+  "w_supply": 0.5,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05000000077944533,
+  "reduction_pct": 94.99999992205547,
+  "Q_per_m": 1.0,
+  "fan_W_per_m": 700.0
+ },
+ {
+  "case": "shelter_U2.0_w0.5_back",
+  "Uref": 2.0,
+  "w_supply": 0.5,
+  "wind_from": "back",
+  "breathing_zone_C": 0.05004572866652951,
+  "reduction_pct": 94.99542713334705,
+  "Q_per_m": 1.0,
+  "fan_W_per_m": 700.0
+ },
+ {
+  "case": "shelter_U2.0_w1.0_front",
+  "Uref": 2.0,
+  "w_supply": 1.0,
+  "wind_from": "front",
+  "breathing_zone_C": 0.05000000074505806,
+  "reduction_pct": 94.9999999254942,
+  "Q_per_m": 2.0,
+  "fan_W_per_m": 1400.0
+ },
+ {
+  "case": "shelter_U2.0_w1.0_back",
+  "Uref": 2.0,
+  "w_supply": 1.0,
+  "wind_from": "back",
+  "breathing_zone_C": 0.050048433316467494,
+  "reduction_pct": 94.99515666835325,
+  "Q_per_m": 2.0,
+  "fan_W_per_m": 1400.0
+ },
+ {
+  "case": "espfence_U1.0_PM25",
+  "Uref": 1.0,
+  "size": "PM25",
+  "lam": 0.8,
+  "u_through": 0.5669799761599214,
+  "frac_of_free_wind": 0.7314424596058006,
+  "single_pass_eff": 0.5061346090526566,
+  "CADR_per_m": 1.563196066283969,
+  "pedestrian_C": {
+   "x=2m": 0.5102395958620995,
+   "x=5m": 0.5171496010992032,
+   "x=10m": 0.5487624034147167,
+   "x=20m": 0.6328913748260874,
+   "x=40m": 0.7353285372274172,
+   "x=80m": 0.8224668741227461
+  }
+ },
+ {
+  "case": "espfence_U1.0_coarse",
+  "Uref": 1.0,
+  "size": "coarse",
+  "lam": 2.4,
+  "u_through": 0.5669799761599214,
+  "frac_of_free_wind": 0.7314424596058006,
+  "single_pass_eff": 0.8795447375135186,
+  "CADR_per_m": 2.708599747116219,
+  "pedestrian_C": {
+   "x=2m": 0.1924166438672712,
+   "x=5m": 0.20500886328240941,
+   "x=10m": 0.2541260149381537,
+   "x=20m": 0.38398687839783463,
+   "x=40m": 0.5492925763161409,
+   "x=80m": 0.695138776302592
+  }
+ },
+ {
+  "case": "espfence_U2.0_PM25",
+  "Uref": 2.0,
+  "size": "PM25",
+  "lam": 0.8,
+  "u_through": 1.133981198693515,
+  "frac_of_free_wind": 0.7314561642342443,
+  "single_pass_eff": 0.29723978557003305,
+  "CADR_per_m": 1.8979095397097763,
+  "pedestrian_C": {
+   "x=2m": 0.6978384650837218,
+   "x=5m": 0.7018632277574889,
+   "x=10m": 0.7216028109069318,
+   "x=20m": 0.7746355116360988,
+   "x=40m": 0.8383455812941136,
+   "x=80m": 0.8918840765953746
+  }
+ },
+ {
+  "case": "espfence_U2.0_coarse",
+  "Uref": 2.0,
+  "size": "coarse",
+  "lam": 2.4,
+  "u_through": 1.133981198693515,
+  "frac_of_free_wind": 0.7314561642342443,
+  "single_pass_eff": 0.6529264643127031,
+  "CADR_per_m": 3.975875058748317,
+  "pedestrian_C": {
+   "x=2m": 0.3861241515116127,
+   "x=5m": 0.395200687618777,
+   "x=10m": 0.4342947892738893,
+   "x=20m": 0.5376964986327692,
+   "x=40m": 0.6651981472991082,
+   "x=80m": 0.7748497128488268
+  }
+ },
+ {
+  "case": "fognet_U1.0",
+  "Uref": 1.0,
+  "C0": 0.7449408284023669,
+  "u_through": 0.7003028918092062,
+  "frac_free_wind": 0.8451388632659154,
+  "Stk": 0.4371428787822762,
+  "eta_d": 0.21770722817109472,
+  "eta_total": 0.0643974937694523,
+  "water_L_m2_day": 0.9005449236937256,
+  "PM_CADR_per_m_net": 0.10422973653862565,
+  "PM_CADR_per_m2_net": 0.026057434134656412,
+  "pedestrian_PM_C": {
+   "x=2m": 0.9882570438521494,
+   "x=5m": 0.9851668030134189,
+   "x=10m": 0.983870053315492,
+   "x=20m": 0.9837602853893515,
+   "x=40m": 0.985380655528111
+  }
+ },
+ {
+  "case": "fognet_U2.0",
+  "Uref": 2.0,
+  "C0": 0.7449408284023669,
+  "u_through": 1.4006107784876451,
+  "frac_free_wind": 0.8451418772175603,
+  "Stk": 0.8742888754604529,
+  "eta_d": 0.35756990171712943,
+  "eta_total": 0.10576905429079965,
+  "water_L_m2_day": 2.9161803303584035,
+  "PM_CADR_per_m_net": 0.33752087156925964,
+  "PM_CADR_per_m2_net": 0.08438021789231491,
+  "pedestrian_PM_C": {
+   "x=2m": 0.9809957225485424,
+   "x=5m": 0.9760173499763649,
+   "x=10m": 0.9739199236425611,
+   "x=20m": 0.9737321973038533,
+   "x=40m": 0.9763445615784576
+  }
+ }
+]
