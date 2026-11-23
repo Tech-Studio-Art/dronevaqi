@@ -1,0 +1,370 @@
+<title>Inversion Mixer Drones</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: engineering spec sheet. Lede + mission diagram, then one drawing sheet per airframe
+   (drawings left, spec table right), then simulated performance, fleet ops, open questions.
+   Accent = sodium-vapour amber of Delhi street lamps seen through winter smog. */
+:root{
+  --paper:#f6f5f1; --sheet:#fffefb; --ink:#1d2230; --ink-2:#555c6b; --rule:#d9d6cc;
+  --line:#2b3245; --amber:#c76a00; --amber-soft:#f3dfc2; --haze:#b9bfcc; --clean:#2a78d6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#8a8f9c;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#12151d; --sheet:#181c26; --ink:#e9e7e0; --ink-2:#a7acb8; --rule:#2c3242;
+  --line:#c9cdd8; --amber:#f0a23a; --amber-soft:#3a2a14; --haze:#4a5162; --clean:#5598e7;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#8a8f9c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#12151d; --sheet:#181c26; --ink:#e9e7e0; --ink-2:#a7acb8; --rule:#2c3242;
+  --line:#c9cdd8; --amber:#f0a23a; --amber-soft:#3a2a14; --haze:#4a5162; --clean:#5598e7;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#8a8f9c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:40px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(30px,5vw,46px);font-weight:800;line-height:1.05}
+h2{font-size:24px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--ink-2)}
+header{display:grid;gap:14px}
+.lede{font-size:17px;max-width:70ch}
+.kpis{display:flex;flex-wrap:wrap;gap:10px 28px;font-family:var(--f-mono);font-size:13px;color:var(--ink-2)}
+.kpis b{color:var(--ink);font-weight:500}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:24px;display:grid;gap:20px}
+.titleblock{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;border-bottom:1px solid var(--rule);padding-bottom:14px}
+.tag{font-family:var(--f-mono);font-size:12px;padding:3px 8px;border:1px solid var(--amber);color:var(--amber);border-radius:3px;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px}
+@media (max-width:820px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.drawings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:520px){.drawings{grid-template-columns:minmax(0,1fr)}}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figcaption{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);letter-spacing:.03em}
+svg{width:100%;height:auto;display:block}
+.dwg{border:1px dashed var(--rule);border-radius:4px;background:var(--paper)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:500;color:var(--ink-2);width:46%}
+td{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+td small{font-family:var(--f-body);color:var(--ink-2)}
+.est{color:var(--amber);font-family:var(--f-mono);font-size:11px;margin-left:4px}
+.list{display:grid;gap:8px;padding-left:18px;margin:0;max-width:72ch}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:820px){.cols3{grid-template-columns:minmax(0,1fr)}}
+.card{display:grid;gap:8px;align-content:start;min-width:0}
+.card .n{font-family:var(--f-display);font-weight:800;font-size:28px;color:var(--amber);font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
+.scroll{overflow-x:auto}
+.note{font-size:13px;color:var(--ink-2);max-width:80ch}
+/* svg ink */
+.ln{stroke:var(--line);fill:none;stroke-width:1.4}
+.ln-thin{stroke:var(--line);fill:none;stroke-width:.8}
+.rotor{stroke:var(--line);fill:var(--amber-soft);fill-opacity:.55;stroke-width:1.1}
+.solid{fill:var(--line)}
+.body{fill:var(--sheet);stroke:var(--line);stroke-width:1.4}
+.amber{stroke:var(--amber);fill:none;stroke-width:1.4}
+.amberfill{fill:var(--amber)}
+.dim{stroke:var(--ink-2);stroke-width:.8;fill:none}
+.t{fill:var(--ink-2);font-family:var(--f-mono);font-size:10.5px}
+.tk{fill:var(--ink);font-family:var(--f-mono);font-size:11px}
+.jet{stroke:var(--clean);stroke-width:1.4;fill:none}
+.grid{stroke:var(--rule);stroke-width:1}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Drone V AQI · Tech Studio .Art · Concept designs · Solution 1</div>
+  <h1>Inversion mixer drones</h1>
+  <p class="lede">On calm winter nights Delhi's smoke sits in a cold layer 50–150 m deep, under a lid of warmer, cleaner air. These two airframes are built to break that lid. The heavy-lift drone pushes clean air from aloft down to street level. The quad flies first to measure, and the fleet mixes only when the air above really is cleaner. There are no filters: the downwash itself is the product.</p>
+  <div class="kpis">
+    <span>Breathing-zone PM after 30 min, 100 heavy drones: <b>−20 %</b></span>
+    <span>Same fleet carrying filters: <b>−1.5 % PM2.5</b></span>
+    <span>Zone: <b>500 × 500 m, 50 m grid</b></span>
+  </div>
+</header>
+
+<section class="sheet" aria-labelledby="mission">
+  <div class="titleblock">
+    <h2 id="mission">How a mixing night works</h2>
+    <span class="tag">SHEET 0 · MISSION</span>
+  </div>
+  <div class="scroll">
+  <svg viewBox="0 0 900 330" role="img" aria-label="Side view of the night boundary layer: a smoky inversion layer from ground to 100 metres, cleaner residual air above, a scout quad profiling to 300 metres and heavy drones at 60 metres pushing air down to the ground.">
+    <defs>
+      <linearGradient id="smog" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="var(--haze)" stop-opacity=".95"/>
+        <stop offset="1" stop-color="var(--haze)" stop-opacity=".15"/>
+      </linearGradient>
+      <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--clean)"/></marker>
+      <marker id="ahg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--ink-2)"/></marker>
+    </defs>
+    <!-- axes: ground y=300, 100 m = 180 px -->
+    <rect x="60" y="120" width="820" height="180" fill="url(#smog)"/>
+    <line x1="60" y1="300" x2="880" y2="300" class="ln"/>
+    <line x1="60" y1="120" x2="880" y2="120" class="amber" stroke-dasharray="6 5"/>
+    <text x="870" y="112" text-anchor="end" class="tk">inversion top ≈ 100 m · θ +5 K</text>
+    <text x="870" y="40" text-anchor="end" class="t">residual layer: PM ≈ 50 % of street level</text>
+    <text x="870" y="56" text-anchor="end" class="t">street level (start): PM2.5 300 · PM10 500 µg/m³</text>
+    <g class="t">
+      <text x="52" y="304" text-anchor="end">0</text><text x="52" y="214" text-anchor="end">50</text>
+      <text x="52" y="124" text-anchor="end">100</text><text x="52" y="34" text-anchor="end">150 m</text>
+    </g>
+    <line x1="56" y1="210" x2="60" y2="210" class="dim"/><line x1="56" y1="30" x2="60" y2="30" class="dim"/>
+    <!-- scout quad profile track -->
+    <g>
+      <line x1="140" y1="296" x2="140" y2="14" class="ln-thin" stroke-dasharray="2 4"/>
+      <g fill="var(--amber)"><circle cx="140" cy="282" r="2.6"/><circle cx="140" cy="264" r="2.6"/><circle cx="140" cy="246" r="2.6"/><circle cx="140" cy="228" r="2.6"/><circle cx="140" cy="210" r="2.6"/><circle cx="140" cy="192" r="2.6"/><circle cx="140" cy="174" r="2.6"/><circle cx="140" cy="156" r="2.6"/><circle cx="140" cy="138" r="2.6"/><circle cx="140" cy="120" r="2.6"/><circle cx="140" cy="102" r="2.6"/><circle cx="140" cy="84" r="2.6"/><circle cx="140" cy="66" r="2.6"/><circle cx="140" cy="48" r="2.6"/><circle cx="140" cy="30" r="2.6"/></g>
+      <rect x="128" y="8" width="24" height="7" rx="2" class="body"/>
+      <text x="160" y="16" class="tk">① Scout quad: PM + T every 10 m to 300 m</text>
+      <text x="160" y="30" class="t">mix only if PM aloft &lt; 0.8 × street PM</text>
+    </g>
+    <!-- heavy drones at 60 m (y = 300-108 = 192) -->
+    <g>
+      <g transform="translate(380 186)"><rect x="-22" y="-5" width="44" height="10" rx="2" class="body"/><line x1="-34" y1="-6" x2="34" y2="-6" class="ln"/></g>
+      <g transform="translate(620 186)"><rect x="-22" y="-5" width="44" height="10" rx="2" class="body"/><line x1="-34" y1="-6" x2="34" y2="-6" class="ln"/></g>
+      <path d="M346 196 L322 296 M414 196 L438 296" class="jet" stroke-dasharray="4 3"/>
+      <path d="M586 196 L562 296 M654 196 L678 296" class="jet" stroke-dasharray="4 3"/>
+      <path d="M380 200 V286" class="jet" marker-end="url(#ah)"/><path d="M620 200 V286" class="jet" marker-end="url(#ah)"/>
+      <path d="M380 120 V172" class="jet" marker-end="url(#ah)"/><path d="M620 120 V172" class="jet" marker-end="url(#ah)"/>
+      <path d="M440 292 C 500 280, 500 200, 470 140" stroke="var(--ink-2)" fill="none" stroke-width="1" marker-end="url(#ahg)"/>
+      <path d="M560 292 C 500 280, 500 200, 530 140" stroke="var(--ink-2)" fill="none" stroke-width="1" marker-end="url(#ahg)"/>
+      <text x="500" y="252" text-anchor="middle" class="t">return flow</text>
+      <text x="368" y="160" text-anchor="end" class="tk">② Heavy mixer @ 60 m</text>
+      <text x="620" y="232" class="t" dx="8">jet reaches ground</text>
+      <text x="620" y="246" class="t" dx="8">(theory: 63 m)</text>
+    </g>
+    <text x="380" y="318" text-anchor="middle" class="t">← 50 m grid spacing →</text>
+    <text x="620" y="318" text-anchor="middle" class="t">③ Street air diluted with air from aloft</text>
+  </svg>
+  </div>
+  <div class="cols3">
+    <div class="card"><h3>① Profile</h3><p class="muted">A scout quad climbs at 1 m/s to 300 m, logging PM2.5, PM10, temperature and humidity every 10 m. The temperature profile shows where the lid sits; the PM profile shows whether the air above is cleaner.</p></div>
+    <div class="card"><h3>② Decide</h3><p class="muted">The fleet mixes only when PM aloft is clearly lower than at street level. When a stubble-smoke layer rides above the lid, mixing would bring it down, so the fleet stays on the ground.</p></div>
+    <div class="card"><h3>③ Mix</h3><p class="muted">Heavy drones hover inside the inversion on a 50 m grid. Each one pulls clean air from above its rotors and drives it to the ground as a jet; the ring of return flow stirs the whole cell.</p></div>
+  </div>
+</section>
+
+<section class="sheet" aria-labelledby="heavy">
+  <div class="titleblock">
+    <h2 id="heavy">IM-50 heavy mixer</h2>
+    <span class="tag">SHEET 1 · PRIMARY MIXER</span>
+  </div>
+  <div class="grid2">
+    <div class="drawings">
+      <figure>
+        <svg class="dwg" viewBox="0 0 340 340" role="img" aria-label="Top view of the IM-50: X frame with four coaxial 54 inch rotor pairs on a 1.6 m square motor layout, overall 2.97 m.">
+          <!-- 100 px = 1 m, centre 170 -->
+          <line x1="90" y1="90" x2="250" y2="250" class="ln" stroke-width="5" stroke-linecap="round"/>
+          <line x1="250" y1="90" x2="90" y2="250" class="ln" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="90" cy="90" r="68.5" class="rotor"/><circle cx="250" cy="90" r="68.5" class="rotor"/>
+          <circle cx="90" cy="250" r="68.5" class="rotor"/><circle cx="250" cy="250" r="68.5" class="rotor"/>
+          <g class="solid"><circle cx="90" cy="90" r="7"/><circle cx="250" cy="90" r="7"/><circle cx="90" cy="250" r="7"/><circle cx="250" cy="250" r="7"/></g>
+          <rect x="140" y="140" width="60" height="60" rx="6" class="body"/>
+          <circle cx="170" cy="170" r="6" class="amberfill"/>
+          <line x1="21.5" y1="12" x2="318.5" y2="12" class="dim"/><line x1="21.5" y1="7" x2="21.5" y2="17" class="dim"/><line x1="318.5" y1="7" x2="318.5" y2="17" class="dim"/>
+          <text x="170" y="27" text-anchor="middle" class="t">2.97 m</text>
+          <line x1="90" y1="328" x2="250" y2="328" class="dim"/><line x1="90" y1="323" x2="90" y2="333" class="dim"/><line x1="250" y1="323" x2="250" y2="333" class="dim"/>
+          <text x="170" y="322" text-anchor="middle" class="t">motor pitch 1.60 m</text>
+          <text x="250" y="166" text-anchor="middle" class="t">Ø1.37 m</text>
+          <text x="170" y="216" text-anchor="middle" class="t">mast</text>
+        </svg>
+        <figcaption>TOP VIEW · 1:30 · rotor discs shaded</figcaption>
+      </figure>
+      <figure>
+        <svg class="dwg" viewBox="0 0 340 340" role="img" aria-label="Side view of the IM-50: coaxial rotors at each arm, a sensor mast 0.5 m above the upper rotors, a 25 kg battery pack slung under the body and a downward jet.">
+          <!-- 100 px = 1 m; rotor plane y=150 -->
+          <line x1="170" y1="150" x2="170" y2="70" class="ln"/>
+          <rect x="158" y="58" width="24" height="14" rx="2" class="body"/>
+          <path d="M163 58 V50 H177 V58" class="amber"/>
+          <text x="186" y="56" class="tk">PM · T · RH inlet</text>
+          <text x="186" y="69" class="t">+0.5 m above rotors</text>
+          <line x1="80" y1="156" x2="260" y2="156" class="ln" stroke-width="5" stroke-linecap="round"/>
+          <g class="solid"><rect x="86" y="140" width="8" height="26"/><rect x="246" y="140" width="8" height="26"/></g>
+          <g class="ln" stroke-width="2.4"><line x1="21.5" y1="142" x2="158.5" y2="142"/><line x1="181.5" y1="142" x2="318.5" y2="142"/><line x1="21.5" y1="164" x2="158.5" y2="164"/><line x1="181.5" y1="164" x2="318.5" y2="164"/></g>
+          <rect x="140" y="150" width="60" height="30" rx="4" class="body"/>
+          <rect x="132" y="184" width="76" height="34" rx="3" class="body" stroke-dasharray="4 2"/>
+          <text x="170" y="205" text-anchor="middle" class="t">25 kg pack</text>
+          <path d="M140 180 L122 240 M200 180 L218 240" class="ln-thin"/>
+          <line x1="112" y1="240" x2="134" y2="240" class="ln"/><line x1="206" y1="240" x2="228" y2="240" class="ln"/>
+          <path d="M90 172 V310" class="jet" marker-end="url(#ah)"/><path d="M250 172 V310" class="jet" marker-end="url(#ah)"/>
+          <path d="M60 172 L45 310 M120 172 L135 310 M220 172 L205 310 M280 172 L295 310" class="jet" stroke-dasharray="4 3"/>
+          <text x="170" y="285" text-anchor="middle" class="tk">downwash ≈ 6.8 m/s</text>
+          <text x="170" y="300" text-anchor="middle" class="t">40 m³/s through the rotors</text>
+          <text x="20" y="134" class="t">coaxial 54 in pair</text>
+        </svg>
+        <figcaption>SIDE VIEW · 1:30 · payload bay holds battery</figcaption>
+      </figure>
+    </div>
+    <div>
+      <table>
+        <tbody>
+          <tr><th>Role</th><td>Primary mixer, hovers inside the inversion</td></tr>
+          <tr><th>Take-off mass</th><td>50 kg <small>(25 kg airframe + 25 kg payload)</small></td></tr>
+          <tr><th>Rotors</th><td>4 × coaxial pairs, 54 in (1.37 m)</td></tr>
+          <tr><th>Disc area</th><td>5.90 m²</td></tr>
+          <tr><th>Hover thrust = jet momentum</th><td>490 N</td></tr>
+          <tr><th>Downwash at the rotors (CFD)</th><td>6.8 m/s · 39.9 m³/s</td></tr>
+          <tr><th>Hover power</th><td>6.8 kW</td></tr>
+          <tr><th>Flight time, base 2.2 kWh battery</th><td>19.5 min</td></tr>
+          <tr><th>Flight time, payload used as battery</th><td>≈ 55 min<span class="est">estimate</span></td></tr>
+          <tr><th>Jet penetration into a 5 K / 100 m inversion</th><td>63 m <small>(Turner/List theory)</small></td></tr>
+          <tr><th>Working hover height</th><td>60 m <small>(≈ jet reach, so the jet touches the ground)</small></td></tr>
+          <tr><th>Sensors</th><td>Intake PM2.5/PM10, T, RH on mast; GPS; barometer</td></tr>
+          <tr><th>Filter</th><td>None <small>(a filter doubles power and catches 12 % of PM2.5)</small></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="cols3">
+    <div class="card"><h3>Battery is the payload</h3><p class="muted">Mixing needs thrust, not cargo. The 25 kg payload allowance becomes a second battery pack (about 4 kWh usable at 200 Wh/kg). Take-off mass and thrust stay the same, so hover power stays 6.8 kW while flight time rises to roughly 55 min.</p></div>
+    <div class="card"><h3>Big, slow rotors</h3><p class="muted">The mixing effect depends on jet momentum, which equals thrust. Power for a given thrust falls as disc area grows, so the largest practical rotors give the same mixing for the least energy. Coaxial pairs keep the footprint inside a 3 m box.</p></div>
+    <div class="card"><h3>Sense the air it moves</h3><p class="muted">The mast inlet sits 0.5 m above the upper rotors, in the undisturbed air the drone is about to push down. Comparing that reading with street-level monitors tells the fleet, every minute, whether mixing is still helping.</p></div>
+  </div>
+</section>
+
+<section class="sheet" aria-labelledby="quad">
+  <div class="titleblock">
+    <h2 id="quad">IS-2 scout quad</h2>
+    <span class="tag">SHEET 2 · PROFILER</span>
+  </div>
+  <div class="grid2">
+    <div class="drawings">
+      <figure>
+        <svg class="dwg" viewBox="0 0 340 340" role="img" aria-label="Top view of the IS-2: 450 mm quad with four 10 inch rotors, overall 0.70 m.">
+          <!-- 400 px = 1 m, centre 170 -->
+          <line x1="80" y1="80" x2="260" y2="260" class="ln" stroke-width="4" stroke-linecap="round"/>
+          <line x1="260" y1="80" x2="80" y2="260" class="ln" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="80" cy="80" r="51" class="rotor"/><circle cx="260" cy="80" r="51" class="rotor"/>
+          <circle cx="80" cy="260" r="51" class="rotor"/><circle cx="260" cy="260" r="51" class="rotor"/>
+          <g class="solid"><circle cx="80" cy="80" r="6"/><circle cx="260" cy="80" r="6"/><circle cx="80" cy="260" r="6"/><circle cx="260" cy="260" r="6"/></g>
+          <rect x="140" y="146" width="60" height="48" rx="6" class="body"/>
+          <circle cx="170" cy="170" r="6" class="amberfill"/>
+          <line x1="29" y1="12" x2="311" y2="12" class="dim"/><line x1="29" y1="7" x2="29" y2="17" class="dim"/><line x1="311" y1="7" x2="311" y2="17" class="dim"/>
+          <text x="170" y="27" text-anchor="middle" class="t">0.70 m</text>
+          <line x1="80" y1="328" x2="260" y2="328" class="dim"/><line x1="80" y1="323" x2="80" y2="333" class="dim"/><line x1="260" y1="323" x2="260" y2="333" class="dim"/>
+          <text x="170" y="322" text-anchor="middle" class="t">motor pitch 0.45 m</text>
+          <text x="260" y="148" text-anchor="middle" class="t">Ø0.254 m</text>
+        </svg>
+        <figcaption>TOP VIEW · 1:7.5</figcaption>
+      </figure>
+      <figure>
+        <svg class="dwg" viewBox="0 0 340 340" role="img" aria-label="Side view of the IS-2: sensor mast 0.5 m above the rotors with a heated inlet, optical particle counter and shielded temperature and humidity sensor.">
+          <!-- 300 px = 1 m; rotor plane y=240 -->
+          <line x1="170" y1="240" x2="170" y2="96" class="ln"/>
+          <rect x="152" y="70" width="36" height="28" rx="3" class="body"/>
+          <path d="M160 70 V58 H180 V70" class="amber"/>
+          <circle cx="170" cy="54" r="3" class="amberfill"/>
+          <text x="196" y="62" class="tk">heated inlet</text>
+          <text x="196" y="76" class="t">dries fog before counting</text>
+          <text x="196" y="90" class="t">optical PM counter</text>
+          <g class="ln-thin"><line x1="136" y1="120" x2="156" y2="120"/><line x1="136" y1="126" x2="156" y2="126"/><line x1="136" y1="132" x2="156" y2="132"/></g>
+          <text x="20" y="128" class="t">shielded T / RH</text>
+          <line x1="20" y1="132" x2="134" y2="126" class="dim"/>
+          <line x1="44" y1="240" x2="44" y2="96" class="dim"/><line x1="39" y1="96" x2="49" y2="96" class="dim"/><line x1="39" y1="240" x2="49" y2="240" class="dim"/>
+          <text x="50" y="176" class="t">0.5 m</text>
+          <line x1="102" y1="246" x2="238" y2="246" class="ln" stroke-width="4" stroke-linecap="round"/>
+          <g class="ln" stroke-width="2"><line x1="51" y1="236" x2="153" y2="236"/><line x1="187" y1="236" x2="289" y2="236"/></g>
+          <rect x="140" y="242" width="60" height="22" rx="4" class="body"/>
+          <path d="M146 264 L132 300 M194 264 L208 300" class="ln-thin"/>
+          <line x1="124" y1="300" x2="140" y2="300" class="ln"/><line x1="200" y1="300" x2="216" y2="300" class="ln"/>
+          <text x="170" y="324" text-anchor="middle" class="t">climb at 1 m/s, sample on the way up</text>
+        </svg>
+        <figcaption>SIDE VIEW · 1:5 · mast keeps the inlet out of rotor wash</figcaption>
+      </figure>
+    </div>
+    <div>
+      <table>
+        <tbody>
+          <tr><th>Role</th><td>Profiler and go/no-go scout, one per zone</td></tr>
+          <tr><th>Take-off mass</th><td>2.0 kg</td></tr>
+          <tr><th>Rotors</th><td>4 × 10 in (0.254 m), 0.45 m motor pitch</td></tr>
+          <tr><th>Hover power</th><td>239 W</td></tr>
+          <tr><th>Flight time (95 Wh)</th><td>23.8 min</td></tr>
+          <tr><th>One profile, 0 → 300 m → 0</th><td>≈ 10–12 min <small>(one battery)</small></td></tr>
+          <tr><th>Sampling</th><td>every 10 m · 30 levels</td></tr>
+          <tr><th>PM sensor</th><td>Optical counter (SPS30 class, or OPC-N3 for research grade)</td></tr>
+          <tr><th>Fog correction</th><td>Heated inlet + RH correction above 80 % RH</td></tr>
+          <tr><th>Calibration</th><td>Hover beside a reference station before every flight</td></tr>
+          <tr><th>As a mixer</th><td>−4 % in 30 min <small>(100 quads; too weak to be the main mixer)</small></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="note">The quad's jet has 1/25 of the heavy drone's momentum and reaches only about 28 m into the same inversion. In the CFD, 100 quads cut breathing-zone PM by 4 % in 30 minutes against 20 % for 100 heavy drones. Its value is the measurement that decides whether the heavy fleet flies at all.</p>
+</section>
+
+<section class="sheet" aria-labelledby="perf">
+  <div class="titleblock">
+    <h2 id="perf">Simulated performance</h2>
+    <span class="tag">CFD · 100 DRONES · 500 × 500 m</span>
+  </div>
+  <div class="grid2">
+    <figure>
+      <svg viewBox="0 0 670 300" role="img" aria-label="Line chart of breathing-zone PM, as a percentage of starting street-level PM, over 30 minutes. No drones stays at 99.5. 100 quads at 30 m fall to 95.3. 100 heavy drones at 60 m fall to 79.3, quickest. 100 heavy drones at 90 m start late and reach 79.0.">
+        <!-- x: 0..30 min -> 60..540 ; y: 76..100 -> 260..20 (10 px per %) -->
+        <g class="grid"><line x1="60" y1="260" x2="540" y2="260"/><line x1="60" y1="210" x2="540" y2="210"/><line x1="60" y1="160" x2="540" y2="160"/><line x1="60" y1="110" x2="540" y2="110"/><line x1="60" y1="60" x2="540" y2="60"/></g>
+        <g class="t" text-anchor="end"><text x="52" y="264">76</text><text x="52" y="214">81</text><text x="52" y="164">86</text><text x="52" y="114">91</text><text x="52" y="64">96</text><text x="52" y="24">100 %</text></g>
+        <g class="t" text-anchor="middle"><text x="60" y="280">0</text><text x="140" y="280">5</text><text x="220" y="280">10</text><text x="300" y="280">15</text><text x="380" y="280">20</text><text x="460" y="280">25</text><text x="540" y="280">30 min</text></g>
+        <polyline fill="none" stroke="var(--s4)" stroke-width="2" points="60,24 140,24 220,24 300,25 380,25 460,25 540,25"/>
+        <polyline fill="none" stroke="var(--s2)" stroke-width="2" points="60,25 140,26 220,27 300,30 380,44 460,56 540,67"/>
+        <polyline fill="none" stroke="var(--s3)" stroke-width="2" points="60,26 140,27 220,27 300,29 380,113 460,182 540,230"/>
+        <polyline fill="none" stroke="var(--s1)" stroke-width="2.4" points="60,24 140,121 220,183 300,197 380,209 460,218 540,227"/>
+        <g><circle cx="540" cy="227" r="4" fill="var(--s1)" stroke="var(--sheet)" stroke-width="2"/><circle cx="540" cy="230" r="4" fill="var(--s3)" stroke="var(--sheet)" stroke-width="2"/><circle cx="540" cy="67" r="4" fill="var(--s2)" stroke="var(--sheet)" stroke-width="2"/></g>
+        <text x="552" y="29" class="tk">no drones</text>
+        <text x="552" y="71" class="tk">quads</text>
+        <text x="552" y="224" class="tk">heavy 60 m</text>
+        <text x="552" y="240" class="tk">heavy 90 m</text>
+      </svg>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>100 heavy @ 60 m: 79.3 %</span>
+        <span><i style="background:var(--s3)"></i>100 heavy @ 90 m: 79.0 %</span>
+        <span><i style="background:var(--s2)"></i>100 quads @ 30 m: 95.3 %</span>
+        <span><i style="background:var(--s4)"></i>no drones: 99.5 %</span>
+      </div>
+      <figcaption>BREATHING-ZONE (0–2 m) PM, % OF STARTING STREET-LEVEL PM</figcaption>
+    </figure>
+    <div class="card">
+      <p>At 60 m the heavy fleet acts within 5–10 minutes. At 90 m the drones draw the cleanest air, but their jets need about 15 minutes to work down to street level. Either way the ceiling is set by how much cleaner the air aloft is: full mixing of the lowest 100 m in this scenario gives 25 %.</p>
+      <p class="muted">With a light wind the zone's air is replaced every 500 m ÷ wind speed. The lasting benefit is then about three quarters of the 30-minute figure at 0.3 m/s and about half at 1 m/s.</p>
+      <p class="note">Model: axisymmetric unit-cell URANS with Boussinesq buoyancy and standard k-ε in OpenFOAM, one drone per 50 m cell. Standard k-ε does not damp turbulence in stable air, so these figures are an upper bound. Scripts and full results: <span class="mono">sim/cfd/</span> in the dronevaqi repository.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" aria-labelledby="fleet">
+  <div class="titleblock">
+    <h2 id="fleet">Fleet for one 25-hectare zone</h2>
+    <span class="tag">OPERATIONS</span>
+  </div>
+  <div class="cols3">
+    <div class="card"><div class="n">100</div><h3>Heavy mixers airborne</h3><p class="muted">On a 50 m grid at 60 m. With the base battery and a 10-minute swap, keeping 100 in the air takes about 152 airframes; with the payload used as battery, about 118.<span class="est">estimate</span></p></div>
+    <div class="card"><div class="n">1–2</div><h3>Scout quads</h3><p class="muted">A profile before launch and every 30 minutes during the night, plus a profile when the wind changes. Ground monitors at street level give the comparison.</p></div>
+    <div class="card"><div class="n">5.4 MWh</div><h3>Energy per 8-hour night</h3><p class="muted">100 × 6.8 kW. That is about the same per hectare as orchard frost fans, which do the same job on farms. Fixed rooftop fans are the cheaper long-term option once a pilot proves the effect.</p></div>
+  </div>
+</section>
+
+<section class="sheet" aria-labelledby="open">
+  <div class="titleblock">
+    <h2 id="open">To prove in the first pilot</h2>
+    <span class="tag">OPEN QUESTIONS</span>
+  </div>
+  <ul class="list">
+    <li>How often on November nights is the air at 60–150 m actually cleaner than at street level? The scout profiles answer this before any heavy drone is built.</li>
+    <li>How much of the simulated 20 % survives real stable-air turbulence and light wind? Measure with ground monitors inside and outside the zone on the same night.</li>
+    <li>Noise from 100 heavy drones over homes at night has not been modelled. Measure one airframe at 60 m before planning a fleet.</li>
+    <li>Coarse dust (PM10) settles about 9 m per 30 minutes; the simulation ignored this, which slightly understates the benefit for PM10.</li>
+    <li>Flying at night, and profiling above 120 m, needs permission under India's Drone Rules 2021, and much of Delhi is a yellow or red zone. Pick a green-zone pilot site on the city edge.</li>
+  </ul>
+</section>
+
+</div>

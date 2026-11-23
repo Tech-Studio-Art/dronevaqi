@@ -1,0 +1,62 @@
+[
+ {
+  "case": "s3d_U1.0_w0.25_parallel",
+  "Uref": 1.0,
+  "w_supply": 0.25,
+  "wind": "parallel",
+  "cells": 236424,
+  "breathing_zone_C": 0.3736717618042863,
+  "reduction_pct": 62.63282381957137,
+  "Q_m3s": 3.5,
+  "fan_kW": 2.45,
+  "fan_kW_lowdp": 1.05
+ },
+ {
+  "case": "s3d_U1.0_w0.5_parallel",
+  "Uref": 1.0,
+  "w_supply": 0.5,
+  "wind": "parallel",
+  "cells": 236424,
+  "breathing_zone_C": 0.188511430323717,
+  "reduction_pct": 81.1488569676283,
+  "Q_m3s": 7.0,
+  "fan_kW": 4.9,
+  "fan_kW_lowdp": 2.1
+ },
+ {
+  "case": "s3d_U1.0_w1.0_parallel",
+  "Uref": 1.0,
+  "w_supply": 1.0,
+  "wind": "parallel",
+  "cells": 236424,
+  "breathing_zone_C": 0.09862634125742066,
+  "reduction_pct": 90.13736587425794,
+  "Q_m3s": 14.0,
+  "fan_kW": 9.8,
+  "fan_kW_lowdp": 4.2
+ },
+ {
+  "case": "s3d_U2.0_w0.5_parallel",
+  "Uref": 2.0,
+  "w_supply": 0.5,
+  "wind": "parallel",
+  "cells": 236424,
+  "breathing_zone_C": 0.37386560077126363,
+  "reduction_pct": 62.61343992287364,
+  "Q_m3s": 7.0,
+  "fan_kW": 4.9,
+  "fan_kW_lowdp": 2.1
+ },
+ {
+  "case": "s3d_U1.0_w0.5_into",
+  "Uref": 1.0,
+  "w_supply": 0.5,
+  "wind": "into",
+  "cells": 331992,
+  "breathing_zone_C": 0.08993588090564908,
+  "reduction_pct": 91.00641190943509,
+  "Q_m3s": 7.0,
+  "fan_kW": 4.9,
+  "fan_kW_lowdp": 2.1
+ }
+]

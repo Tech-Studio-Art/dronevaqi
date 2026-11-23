@@ -1,0 +1,210 @@
+{
+ "no_drone": {
+  "case": "no_drone",
+  "cells": 7280,
+  "thrust_N": 0.0,
+  "hover_z": 60.0,
+  "disk_R": 1.37,
+  "jet_penetration_theory_m": 0,
+  "series": [
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_0/internal.vtu",
+    "z<2m": 0.9958781605666037,
+    "z<10m": 0.9748189523876336,
+    "z<30m": 0.9234828234781303
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_319/internal.vtu",
+    "z<2m": 0.9957449257826287,
+    "z<10m": 0.9747989515664391,
+    "z<30m": 0.9234764197534333
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_619/internal.vtu",
+    "z<2m": 0.9956120570115592,
+    "z<10m": 0.9747796340639987,
+    "z<30m": 0.9234701480074698
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_919/internal.vtu",
+    "z<2m": 0.9954807373865855,
+    "z<10m": 0.9747606824651643,
+    "z<30m": 0.9234642397255821
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_1219/internal.vtu",
+    "z<2m": 0.9953525196218039,
+    "z<10m": 0.9747420954222511,
+    "z<30m": 0.9234585109184998
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_1519/internal.vtu",
+    "z<2m": 0.9952299411339488,
+    "z<10m": 0.9747241464179652,
+    "z<30m": 0.9234527894248072
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/no_drone/VTK_all/no_drone_1819/internal.vtu",
+    "z<2m": 0.9951102399736537,
+    "z<10m": 0.9747063878061445,
+    "z<30m": 0.9234472575389133
+   }
+  ]
+ },
+ "heavy_z60": {
+  "case": "heavy_z60",
+  "cells": 7280,
+  "thrust_N": 490.5,
+  "hover_z": 60.0,
+  "disk_R": 1.369947111730825,
+  "jet_penetration_theory_m": 63.36970853929976,
+  "series": [
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_0/internal.vtu",
+    "z<2m": 0.9958781604572821,
+    "z<10m": 0.9748189534834901,
+    "z<30m": 0.9234824447236091
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_6587/internal.vtu",
+    "z<2m": 0.8991251541604327,
+    "z<10m": 0.8803589395713182,
+    "z<30m": 0.8681835254479445
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_12445/internal.vtu",
+    "z<2m": 0.8366456555249564,
+    "z<10m": 0.8363889031330018,
+    "z<30m": 0.8379693637735042
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_17936/internal.vtu",
+    "z<2m": 0.8225279829520109,
+    "z<10m": 0.8238722951063924,
+    "z<30m": 0.824979426107284
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_23408/internal.vtu",
+    "z<2m": 0.8112295037340707,
+    "z<10m": 0.8126393836501079,
+    "z<30m": 0.8139339760609207
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_28869/internal.vtu",
+    "z<2m": 0.801807874974703,
+    "z<10m": 0.8030517783794029,
+    "z<30m": 0.8041906420580712
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z60/VTK_all/heavy_z60_34328/internal.vtu",
+    "z<2m": 0.793307765458298,
+    "z<10m": 0.7944278851273401,
+    "z<30m": 0.795449177537939
+   }
+  ]
+ },
+ "heavy_z90": {
+  "case": "heavy_z90",
+  "cells": 7280,
+  "thrust_N": 490.5,
+  "hover_z": 90.0,
+  "disk_R": 1.369947111730825,
+  "jet_penetration_theory_m": 63.36970853929976,
+  "series": [
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_0/internal.vtu",
+    "z<2m": 0.9935230809778757,
+    "z<10m": 0.9743457471650125,
+    "z<30m": 0.925850350786763
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_6591/internal.vtu",
+    "z<2m": 0.9934071133518064,
+    "z<10m": 0.9742366859765712,
+    "z<30m": 0.9083623390769842
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_12578/internal.vtu",
+    "z<2m": 0.9930634244167341,
+    "z<10m": 0.9732522118004681,
+    "z<30m": 0.876779787493355
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_18085/internal.vtu",
+    "z<2m": 0.9913934667406619,
+    "z<10m": 0.9378974528849897,
+    "z<30m": 0.844569536319565
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_23569/internal.vtu",
+    "z<2m": 0.9073744086300399,
+    "z<10m": 0.8769822510861274,
+    "z<30m": 0.8125212057649635
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_29047/internal.vtu",
+    "z<2m": 0.8376899841610469,
+    "z<10m": 0.8224407888078493,
+    "z<30m": 0.7826311069871664
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/heavy_z90/VTK_all/heavy_z90_34522/internal.vtu",
+    "z<2m": 0.7897460773458425,
+    "z<10m": 0.780089632128815,
+    "z<30m": 0.7566860850319502
+   }
+  ]
+ },
+ "quad_z30": {
+  "case": "quad_z30",
+  "cells": 7840,
+  "thrust_N": 19.62,
+  "hover_z": 30.0,
+  "disk_R": 0.75,
+  "jet_penetration_theory_m": 28.339795201644634,
+  "series": [
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_0/internal.vtu",
+    "z<2m": 0.9947189105071083,
+    "z<10m": 0.975478541790575,
+    "z<30m": 0.9250124746666103
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_4346/internal.vtu",
+    "z<2m": 0.9939380463100642,
+    "z<10m": 0.9696931911145557,
+    "z<30m": 0.924870257599261
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_8569/internal.vtu",
+    "z<2m": 0.993221117948924,
+    "z<10m": 0.9621531412406933,
+    "z<30m": 0.9247022908998452
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_12497/internal.vtu",
+    "z<2m": 0.9900031456416232,
+    "z<10m": 0.9557832469838289,
+    "z<30m": 0.9239376459950145
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_16182/internal.vtu",
+    "z<2m": 0.9759175613291116,
+    "z<10m": 0.9502511978044206,
+    "z<30m": 0.9216110114267018
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_19841/internal.vtu",
+    "z<2m": 0.9638345217526351,
+    "z<10m": 0.9439588885646644,
+    "z<30m": 0.9193904407875918
+   },
+   {
+    "file": "/home/user/dronevaqi/sim/cfd/runs/mixing/quad_z30/VTK_all/quad_z30_23497/internal.vtu",
+    "z<2m": 0.9530935105070958,
+    "z<10m": 0.9375717642932586,
+    "z<30m": 0.9172525043508563
+   }
+  ]
+ }
+}
