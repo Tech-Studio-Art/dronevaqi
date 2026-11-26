@@ -155,7 +155,7 @@ A("C. Technique 2: electrostatic wind fence")
 A(f"We used two-dimensional steady RANS with the k-ε model. The inlet wind profile and the ground roughness follow "
   f"Richards and Hoxey {c('richards')}. PM is a passive scalar with a turbulent Schmidt number of 0.7 {c('tominaga')}. "
   f"The fence is 6 m high and 0.5 m deep. It is a porous zone with a pressure-loss coefficient of 1.5. Inside the "
-  f"fence, PM decreases at a rate set by the Deutsch-Anderson equation {c('deutsch', 'mizuno')}. The migration velocity "
+  f"fence, PM decreases at a rate set by the Deutsch-Anderson equation {c('mizuno')}. The migration velocity "
   f"is 0.04 m/s for PM2.5 and 0.12 m/s for coarse PM. These values are in the low range of industrial "
   f"electrostatic precipitators {c('white', 'jaworek')}.")
 A(f"We ran two configurations. In the first configuration, only background air flows through the fence. In the second "
