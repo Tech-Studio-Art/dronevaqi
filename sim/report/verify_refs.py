@@ -15,7 +15,6 @@ REFS = [  # key, DOI, title we intend to cite
  ("zilitinkevich", "10.1007/s10546-012-9768-8", "A hierarchy of energy- and flux-budget (EFB) turbulence closure models for stably-stratified geophysical flows"),
  ("richards", "10.1016/0167-6105(93)90124-7", "Appropriate boundary conditions for computational wind engineering models using the k-ε turbulence model"),
  ("tominaga", "10.1016/j.atmosenv.2007.06.054", "Turbulent Schmidt numbers for CFD analysis with various types of flowfield"),
- ("deutsch", "10.1002/andp.19223731203", "Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator"),
  ("mizuno", "10.1109/94.879357", "Electrostatic precipitation"),
  ("white", "10.1109/t-aiee.1951.5060545", "Particle charging in electrostatic precipitation"),
  ("jaworek", "10.1016/j.elstat.2006.07.012", "Modern electrostatic devices and methods for exhaust gas cleaning: A brief review"),

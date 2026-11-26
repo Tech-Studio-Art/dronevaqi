@@ -96,14 +96,6 @@
   "citation": "Tominaga Y, Stathopoulos T. Turbulent Schmidt numbers for CFD analysis with various types of flowfield. Atmospheric Environment 41(37):8091-8099 (2007)."
  },
  {
-  "key": "deutsch",
-  "doi": "10.1002/andp.19223731203",
-  "crossref_title": "Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator",
-  "cited_title": "Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator",
-  "match": 1.0,
-  "citation": "Deutsch W. Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator. Annalen der Physik 373(12):335-344 (1922)."
- },
- {
   "key": "mizuno",
   "doi": "10.1109/94.879357",
   "crossref_title": "Electrostatic precipitation",
