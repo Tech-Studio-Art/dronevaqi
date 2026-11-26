@@ -56,6 +56,9 @@ CASES = {
     "no_drone": dict(T=0.0, Rd=1.37, zh=60.0),
     # conservative case: stability-reduced turbulent transport of heat/PM,
     # Pr_t = Sc_t = 2.0 (stable-boundary-layer range ~1-3; e.g. Zilitinkevich et al. 2013)
+    # grid-independence study (Celik et al. 2008): refinement ratio sqrt(2) around the base mesh
+    "heavy_z60_gc": dict(T=50 * 9.81, Rd=math.sqrt(4 * 1.474 / math.pi), zh=60.0, refine=1 / math.sqrt(2)),
+    "heavy_z60_gf": dict(T=50 * 9.81, Rd=math.sqrt(4 * 1.474 / math.pi), zh=60.0, refine=math.sqrt(2)),
     "heavy_z60_prt2": dict(T=50 * 9.81, Rd=math.sqrt(4 * 1.474 / math.pi), zh=60.0, Prt=2.0),
 }
 T_END = 1800.0
@@ -81,15 +84,16 @@ def build(case, c):
     cs, sn = math.cos(a), math.sin(a)
     r0 = 0.02
     Rd, zh = c["Rd"], c["zh"]
-    dr = Rd / 4                         # 4 cells across disk radius
+    fm = c.get("refine", 1.0)           # mesh refinement factor (grid-independence study)
+    dr = Rd / (4 * fm)                  # 4 cells across disk radius on the base mesh
     r_in = 4 * Rd
     n_in = int(math.ceil((r_in - r0) / dr))
-    n_out = 40
+    n_out = int(round(40 * fm))
     dz = dr
     z_lo, z_hi = max(zh - 4 * Rd - 2, 2.0), zh + 3 * Rd + 2
-    n_z1 = 30
+    n_z1 = int(round(30 * fm))
     n_z2 = int(math.ceil((z_hi - z_lo) / dz))
-    n_z3 = 60
+    n_z3 = int(round(60 * fm))
     nz = n_z1 + n_z2 + n_z3
     nr = n_in + n_out
     fr_in = (r_in - r0) / (R_CELL - r0)

@@ -45,8 +45,11 @@ Z0 = 0.05
 
 
 # ------------------------------------------------------------- lattice mesher
+MESH_F = 1.0   # global mesh refinement factor (grid-independence study); 1.0 = base mesh
+
+
 def spacing(a, b, h):
-    return max(1, int(math.ceil(abs(b - a) / h)))
+    return max(1, int(math.ceil(abs(b - a) * MESH_F / h)))
 
 
 def lattice_mesh(case, xb, zb, hx, hz, solid=(), special=None, depth=1.0):
