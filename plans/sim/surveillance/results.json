@@ -1,0 +1,193 @@
+{
+ "Q_g_s": 0.2777777777777778,
+ "EF_g_kg": 10.0,
+ "burn_kg_h": 100.0,
+ "threshold_ug_m3": 25.0,
+ "sensor_height_m": 3.0,
+ "detection": {
+  "night (stable, E-F)": [
+   {
+    "spacing_m": 250,
+    "p_detect": 0.8235,
+    "mean_sensors": 1.5604128718882817,
+    "mean_dist_m": 355.8096311076151
+   },
+   {
+    "spacing_m": 500,
+    "p_detect": 0.3185,
+    "mean_sensors": 1.0337519623233908,
+    "mean_dist_m": 440.15339883007437
+   },
+   {
+    "spacing_m": 1000,
+    "p_detect": 0.08025,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 444.17912072602735
+   },
+   {
+    "spacing_m": 2000,
+    "p_detect": 0.01925,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 412.6991761274165
+   },
+   {
+    "spacing_m": 6000,
+    "p_detect": 0.00175,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 383.4610554791222
+   }
+  ],
+  "day (neutral, D)": [
+   {
+    "spacing_m": 250,
+    "p_detect": 0.21175,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 143.92700638995188
+   },
+   {
+    "spacing_m": 500,
+    "p_detect": 0.049,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 137.55276807792976
+   },
+   {
+    "spacing_m": 1000,
+    "p_detect": 0.01275,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 145.15841082788566
+   },
+   {
+    "spacing_m": 2000,
+    "p_detect": 0.0035,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 137.8147021720196
+   },
+   {
+    "spacing_m": 6000,
+    "p_detect": 0.00025,
+    "mean_sensors": 1.0,
+    "mean_dist_m": 103.79424537215655
+   }
+  ]
+ },
+ "axis_increment_ug_m3": {
+  "night (stable, E-F)": {
+   "100": 1005.871721086017,
+   "250": 194.35301623340195,
+   "500": 57.92444523429711,
+   "1000": 18.760786595177798,
+   "2000": 6.734912634675859
+  },
+  "day (neutral, D)": {
+   "100": 159.19797567306298,
+   "250": 27.351181034719197,
+   "500": 7.410535812830897,
+   "1000": 2.1293707097186165,
+   "2000": 0.6698098612496327
+  }
+ },
+ "avoided": [
+  {
+   "response_h": 0.25,
+   "avoided_kg": 3.7500000000000004
+  },
+  {
+   "response_h": 0.5,
+   "avoided_kg": 3.5000000000000004
+  },
+  {
+   "response_h": 0.75,
+   "avoided_kg": 3.25
+  },
+  {
+   "response_h": 1.0,
+   "avoided_kg": 3.0
+  },
+  {
+   "response_h": 1.25,
+   "avoided_kg": 2.7500000000000004
+  },
+  {
+   "response_h": 1.5,
+   "avoided_kg": 2.5
+  },
+  {
+   "response_h": 1.75,
+   "avoided_kg": 2.25
+  },
+  {
+   "response_h": 2.0,
+   "avoided_kg": 2.0
+  },
+  {
+   "response_h": 2.25,
+   "avoided_kg": 1.7500000000000002
+  },
+  {
+   "response_h": 2.5,
+   "avoided_kg": 1.5
+  },
+  {
+   "response_h": 2.75,
+   "avoided_kg": 1.25
+  },
+  {
+   "response_h": 3.0,
+   "avoided_kg": 1.0
+  },
+  {
+   "response_h": 3.25,
+   "avoided_kg": 0.75
+  },
+  {
+   "response_h": 3.5,
+   "avoided_kg": 0.5
+  },
+  {
+   "response_h": 3.75,
+   "avoided_kg": 0.25
+  },
+  {
+   "response_h": 4.0,
+   "avoided_kg": 0.0
+  }
+ ],
+ "scenario": {
+  "spacing_m": 500,
+  "sensors_per_25km2": 121,
+  "p_detect_night": 0.3185,
+  "response_h": 0.8594487055230575,
+  "avoided_kg_per_fire": 3.140551294476943,
+  "unattended_kg_per_fire": 4.0
+ },
+ "patrol": [
+  {
+   "drones": 0,
+   "revisit_h": Infinity,
+   "p_detect_in_burn": 0.32135,
+   "mean_detect_h": 2.8270725,
+   "emission_avoided_pct": 25.306312500000004
+  },
+  {
+   "drones": 1,
+   "revisit_h": 3.3068783068783074,
+   "p_detect_in_burn": 1.0,
+   "mean_detect_h": 1.2264687538510548,
+   "emission_avoided_pct": 56.83828115372363
+  },
+  {
+   "drones": 2,
+   "revisit_h": 1.6534391534391537,
+   "p_detect_in_burn": 1.0,
+   "mean_detect_h": 0.6591792577193013,
+   "emission_avoided_pct": 71.02051855701747
+  },
+  {
+   "drones": 4,
+   "revisit_h": 0.8267195767195769,
+   "p_detect_in_burn": 1.0,
+   "mean_detect_h": 0.36940108288331436,
+   "emission_avoided_pct": 78.26497292791714
+  }
+ ]
+}
