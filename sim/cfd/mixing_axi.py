@@ -54,6 +54,9 @@ CASES = {
     # momentum jet depends on M = T/rho only (Turner 1966; List 1982); keeps dt tractable
     "quad_z30": dict(T=2.0 * 9.81, Rd=0.75, zh=30.0),
     "no_drone": dict(T=0.0, Rd=1.37, zh=60.0),
+    # conservative case: stability-reduced turbulent transport of heat/PM,
+    # Pr_t = Sc_t = 2.0 (stable-boundary-layer range ~1-3; e.g. Zilitinkevich et al. 2013)
+    "heavy_z60_prt2": dict(T=50 * 9.81, Rd=math.sqrt(4 * 1.474 / math.pi), zh=60.0, Prt=2.0),
 }
 T_END = 1800.0
 
@@ -133,7 +136,7 @@ actions (
 """
     write(case, "constant/fvOptions", fo)
     write(case, "constant/transportProperties",
-          f"transportModel Newtonian;\nnu {NU};\nbeta {1 / THETA0:.6g};\nTRef {THETA0};\nPr 0.7;\nPrt 0.7;\n")
+          f"transportModel Newtonian;\nnu {NU};\nbeta {1 / THETA0:.6g};\nTRef {THETA0};\nPr 0.7;\nPrt {c.get('Prt', 0.7)};\n")
     write(case, "constant/g", "dimensions [0 1 -2 0 0 0 0];\nvalue (0 0 -9.81);\n",
           cls="uniformDimensionedVectorField")
     write(case, "constant/turbulenceProperties",
@@ -188,7 +191,7 @@ PIMPLE { momentumPredictor yes; nOuterCorrectors 1; nCorrectors 2; nNonOrthogona
                                  dict(sym, ground="        type nutkWallFunction; value uniform 0;",
                                       top="        type calculated; value uniform 0;")))
     write_field(case, "0", field("alphat", "volScalarField", "[0 2 -1 0 0 0 0]", "0",
-                                 dict(sym, ground="        type alphatJayatillekeWallFunction; Prt 0.7; value uniform 0;",
+                                 dict(sym, ground=f"        type alphatJayatillekeWallFunction; Prt {c.get('Prt', 0.7)}; value uniform 0;",
                                       top="        type calculated; value uniform 0;")))
     write_field(case, "0", field("T", "volScalarField", "[0 0 0 1 0 0 0]", f"{THETA0}",
                                  dict(sym, ground="        type zeroGradient;", top="        type zeroGradient;")))

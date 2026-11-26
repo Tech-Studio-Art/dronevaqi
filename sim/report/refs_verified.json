@@ -1,0 +1,194 @@
+[
+ {
+  "key": "pope",
+  "doi": "10.1080/10473289.2006.10464485",
+  "crossref_title": "Health Effects of Fine Particulate Air Pollution: Lines that Connect",
+  "cited_title": "Health effects of fine particulate air pollution: lines that connect",
+  "match": 1.0,
+  "citation": "Pope CA, Dockery DW. Health Effects of Fine Particulate Air Pollution: Lines that Connect. Journal of the Air & Waste Management Association 56(6):709-742 (2006)."
+ },
+ {
+  "key": "guttikunda",
+  "doi": "10.1016/j.envdev.2012.12.002",
+  "crossref_title": "Health impacts of particulate pollution in a megacity—Delhi, India",
+  "cited_title": "Health impacts of particulate pollution in a megacity—Delhi, India",
+  "match": 1.0,
+  "citation": "Guttikunda SK, Goel R. Health impacts of particulate pollution in a megacity—Delhi, India. Environmental Development 6:8-20 (2013)."
+ },
+ {
+  "key": "cusworth",
+  "doi": "10.1088/1748-9326/aab303",
+  "crossref_title": "Quantifying the influence of agricultural fires in northwest India on urban air pollution in Delhi, India",
+  "cited_title": "Quantifying the influence of agricultural fires in northwest India on urban air pollution in Delhi, India",
+  "match": 1.0,
+  "citation": "Cusworth DH, Mickley LJ, Sulprizio MP, Liu T, Marlier ME, DeFries RS, et al. Quantifying the influence of agricultural fires in northwest India on urban air pollution in Delhi, India. Environmental Research Letters 13(4):044018 (2018)."
+ },
+ {
+  "key": "stull",
+  "doi": "10.1007/978-94-009-3027-8",
+  "crossref_title": "An Introduction to Boundary Layer Meteorology",
+  "cited_title": "An Introduction to Boundary Layer Meteorology",
+  "match": 1.0,
+  "citation": "Stull RB. An Introduction to Boundary Layer Meteorology. Springer Netherlands (1988)."
+ },
+ {
+  "key": "mahrt",
+  "doi": "10.1146/annurev-fluid-010313-141354",
+  "crossref_title": "Stably Stratified Atmospheric Boundary Layers",
+  "cited_title": "Stably stratified atmospheric boundary layers",
+  "match": 1.0,
+  "citation": "Mahrt L. Stably Stratified Atmospheric Boundary Layers. Annual Review of Fluid Mechanics 46(1):23-45 (2014)."
+ },
+ {
+  "key": "blocken",
+  "doi": "10.1016/j.buildenv.2015.02.015",
+  "crossref_title": "Computational Fluid Dynamics for urban physics: Importance, scales, possibilities, limitations and ten tips and tricks towards accurate and reliable simulations",
+  "cited_title": "Computational Fluid Dynamics for urban physics: Importance, scales, possibilities, limitations and ten tips and tricks towards accurate and reliable simulations",
+  "match": 1.0,
+  "citation": "Blocken B. Computational Fluid Dynamics for urban physics: Importance, scales, possibilities, limitations and ten tips and tricks towards accurate and reliable simulations. Building and Environment 91:219-245 (2015)."
+ },
+ {
+  "key": "launder",
+  "doi": "10.1016/0045-7825(74)90029-2",
+  "crossref_title": "The numerical computation of turbulent flows",
+  "cited_title": "The numerical computation of turbulent flows",
+  "match": 1.0,
+  "citation": "Launder BE, Spalding DB. The numerical computation of turbulent flows. Computer Methods in Applied Mechanics and Engineering 3(2):269-289 (1974)."
+ },
+ {
+  "key": "turner",
+  "doi": "10.1017/s0022112066001526",
+  "crossref_title": "Jets and plumes with negative or reversing buoyancy",
+  "cited_title": "Jets and plumes with negative or reversing buoyancy",
+  "match": 1.0,
+  "citation": "Turner JS. Jets and plumes with negative or reversing buoyancy. Journal of Fluid Mechanics 26(4):779-792 (1966)."
+ },
+ {
+  "key": "list",
+  "doi": "10.1146/annurev.fl.14.010182.001201",
+  "crossref_title": "Turbulent Jets and Plumes",
+  "cited_title": "Turbulent jets and plumes",
+  "match": 1.0,
+  "citation": "List EJ. Turbulent Jets and Plumes. Annual Review of Fluid Mechanics 14(1):189-212 (1982)."
+ },
+ {
+  "key": "zilitinkevich",
+  "doi": "10.1007/s10546-012-9768-8",
+  "crossref_title": "A Hierarchy of Energy- and Flux-Budget (EFB) Turbulence Closure Models for Stably-Stratified Geophysical Flows",
+  "cited_title": "A hierarchy of energy- and flux-budget (EFB) turbulence closure models for stably-stratified geophysical flows",
+  "match": 1.0,
+  "citation": "Zilitinkevich SS, Elperin T, Kleeorin N, Rogachevskii I, Esau I. A Hierarchy of Energy- and Flux-Budget (EFB) Turbulence Closure Models for Stably-Stratified Geophysical Flows. Boundary-Layer Meteorology 146(3):341-373 (2012)."
+ },
+ {
+  "key": "richards",
+  "doi": "10.1016/0167-6105(93)90124-7",
+  "crossref_title": "Appropriate boundary conditions for computational wind engineering models using the k-ϵ turbulence model",
+  "cited_title": "Appropriate boundary conditions for computational wind engineering models using the k-ε turbulence model",
+  "match": 0.963,
+  "citation": "Richards PJ, Hoxey RP. Appropriate boundary conditions for computational wind engineering models using the k-ϵ turbulence model. Journal of Wind Engineering and Industrial Aerodynamics 46-47:145-153 (1993)."
+ },
+ {
+  "key": "tominaga",
+  "doi": "10.1016/j.atmosenv.2007.06.054",
+  "crossref_title": "Turbulent Schmidt numbers for CFD analysis with various types of flowfield",
+  "cited_title": "Turbulent Schmidt numbers for CFD analysis with various types of flowfield",
+  "match": 1.0,
+  "citation": "Tominaga Y, Stathopoulos T. Turbulent Schmidt numbers for CFD analysis with various types of flowfield. Atmospheric Environment 41(37):8091-8099 (2007)."
+ },
+ {
+  "key": "deutsch",
+  "doi": "10.1002/andp.19223731203",
+  "crossref_title": "Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator",
+  "cited_title": "Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator",
+  "match": 1.0,
+  "citation": "Deutsch W. Bewegung und Ladung der Elektrizitätsträger im Zylinderkondensator. Annalen der Physik 373(12):335-344 (1922)."
+ },
+ {
+  "key": "mizuno",
+  "doi": "10.1109/94.879357",
+  "crossref_title": "Electrostatic precipitation",
+  "cited_title": "Electrostatic precipitation",
+  "match": 1.0,
+  "citation": "Mizuno A. Electrostatic precipitation. IEEE Transactions on Dielectrics and Electrical Insulation 7(5):615-624 (2000)."
+ },
+ {
+  "key": "white",
+  "doi": "10.1109/t-aiee.1951.5060545",
+  "crossref_title": "Particle Charging in Electrostatic Precipitation",
+  "cited_title": "Particle charging in electrostatic precipitation",
+  "match": 1.0,
+  "citation": "White HJ. Particle Charging in Electrostatic Precipitation. Transactions of the American Institute of Electrical Engineers 70(2):1186-1191 (1951)."
+ },
+ {
+  "key": "jaworek",
+  "doi": "10.1016/j.elstat.2006.07.012",
+  "crossref_title": "Modern electrostatic devices and methods for exhaust gas cleaning: A brief review",
+  "cited_title": "Modern electrostatic devices and methods for exhaust gas cleaning: A brief review",
+  "match": 1.0,
+  "citation": "Jaworek A, Krupa A, Czech T. Modern electrostatic devices and methods for exhaust gas cleaning: A brief review. Journal of Electrostatics 65(3):133-155 (2007)."
+ },
+ {
+  "key": "baldauf",
+  "doi": "10.1016/j.atmosenv.2008.05.051",
+  "crossref_title": "Impacts of noise barriers on near-road air quality",
+  "cited_title": "Impacts of noise barriers on near-road air quality",
+  "match": 1.0,
+  "citation": "Baldauf R, Thoma E, Khlystov A, Isakov V, Bowker G, Long T, et al. Impacts of noise barriers on near-road air quality. Atmospheric Environment 42(32):7502-7507 (2008)."
+ },
+ {
+  "key": "hagler",
+  "doi": "10.1016/j.atmosenv.2011.02.030",
+  "crossref_title": "Model evaluation of roadside barrier impact on near-road air pollution",
+  "cited_title": "Model evaluation of roadside barrier impact on near-road air pollution",
+  "match": 1.0,
+  "citation": "Hagler GSW, Tang W, Freeman MJ, Heist DK, Perry SG, Vette AF. Model evaluation of roadside barrier impact on near-road air pollution. Atmospheric Environment 45(15):2522-2530 (2011)."
+ },
+ {
+  "key": "hanna",
+  "doi": "10.2172/5591108",
+  "crossref_title": "Handbook on atmospheric diffusion",
+  "cited_title": "Handbook on atmospheric diffusion",
+  "match": 1.0,
+  "citation": "Hanna SR, Briggs GA, Hosker RPJ. Handbook on atmospheric diffusion. Office of Scientific and Technical Information (OSTI) (1982)."
+ },
+ {
+  "key": "wiedinmyer",
+  "doi": "10.1021/es502250z",
+  "crossref_title": "Global Emissions of Trace Gases, Particulate Matter, and Hazardous Air Pollutants from Open Burning of Domestic Waste",
+  "cited_title": "Global emissions of trace gases, particulate matter, and hazardous air pollutants from open burning of domestic waste",
+  "match": 1.0,
+  "citation": "Wiedinmyer C, Yokelson RJ, Gullett BK. Global Emissions of Trace Gases, Particulate Matter, and Hazardous Air Pollutants from Open Burning of Domestic Waste. Environmental Science & Technology 48(16):9523-9530 (2014)."
+ },
+ {
+  "key": "snyder",
+  "doi": "10.1021/es4022602",
+  "crossref_title": "The Changing Paradigm of Air Pollution Monitoring",
+  "cited_title": "The changing paradigm of air pollution monitoring",
+  "match": 1.0,
+  "citation": "Snyder EG, Watkins TH, Solomon PA, Thoma ED, Williams RW, Hagler GSW, et al. The Changing Paradigm of Air Pollution Monitoring. Environmental Science & Technology 47(20):11369-11377 (2013)."
+ },
+ {
+  "key": "schroeder",
+  "doi": "10.1016/j.rse.2013.12.008",
+  "crossref_title": "The New VIIRS 375 m active fire detection data product: Algorithm description and initial assessment",
+  "cited_title": "The New VIIRS 375 m active fire detection data product: Algorithm description and initial assessment",
+  "match": 1.0,
+  "citation": "Schroeder W, Oliva P, Giglio L, Csiszar IA. The New VIIRS 375 m active fire detection data product: Algorithm description and initial assessment. Remote Sensing of Environment 143:85-96 (2014)."
+ },
+ {
+  "key": "battany",
+  "doi": "10.1016/j.agrformet.2012.01.009",
+  "crossref_title": "Vineyard frost protection with upward-blowing wind machines",
+  "cited_title": "Vineyard frost protection with upward-blowing wind machines",
+  "match": 1.0,
+  "citation": "Battany MC. Vineyard frost protection with upward-blowing wind machines. Agricultural and Forest Meteorology 157:39-48 (2012)."
+ },
+ {
+  "key": "boelter",
+  "doi": "10.1080/02786829708965505",
+  "crossref_title": "Ozone Generation by Indoor, Electrostatic Air Cleaners",
+  "cited_title": "Ozone generation by indoor, electrostatic air cleaners",
+  "match": 1.0,
+  "citation": "Boelter KJ, Davidson JH. Ozone Generation by Indoor, Electrostatic Air Cleaners. Aerosol Science and Technology 27(6):689-708 (1997)."
+ }
+]
