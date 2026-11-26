@@ -1,193 +1,163 @@
 {
- "Q_g_s": 0.2777777777777778,
- "EF_g_kg": 10.0,
- "burn_kg_h": 100.0,
- "threshold_ug_m3": 25.0,
- "sensor_height_m": 3.0,
+ "Q_per_fire_g_h": 1.0,
+ "n_fires": 100,
+ "zone_m": 500.0,
+ "burn_h": 4.0,
+ "hotspot_g_h": 100.0,
+ "hotspot_g_per_night": 400.0,
+ "single_fire_100m_night_ug_m3": 1.0058717210860169,
+ "field": {
+  "night (stable, E-F)": {
+   "zone_mean": 2.1272640047422926,
+   "zone_p90": 4.6092763071190905,
+   "downwind_250m": 1.5970027265612106,
+   "downwind_1km": 0.730635523752381
+  },
+  "day (neutral, D)": {
+   "zone_mean": 0.5902892653435706,
+   "zone_p90": 1.2929453396514143,
+   "downwind_250m": 0.33235915189394266,
+   "downwind_1km": 0.10968652074484304
+  }
+ },
  "detection": {
-  "night (stable, E-F)": [
+  "night (stable, E-F)|10": [
    {
     "spacing_m": 250,
-    "p_detect": 0.8235,
-    "mean_sensors": 1.5604128718882817,
-    "mean_dist_m": 355.8096311076151
+    "p": 0.0075
    },
    {
     "spacing_m": 500,
-    "p_detect": 0.3185,
-    "mean_sensors": 1.0337519623233908,
-    "mean_dist_m": 440.15339883007437
+    "p": 0.01
    },
    {
     "spacing_m": 1000,
-    "p_detect": 0.08025,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 444.17912072602735
+    "p": 0.0
    },
    {
     "spacing_m": 2000,
-    "p_detect": 0.01925,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 412.6991761274165
-   },
-   {
-    "spacing_m": 6000,
-    "p_detect": 0.00175,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 383.4610554791222
+    "p": 0.0
    }
   ],
-  "day (neutral, D)": [
+  "night (stable, E-F)|25": [
    {
     "spacing_m": 250,
-    "p_detect": 0.21175,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 143.92700638995188
+    "p": 0.0
    },
    {
     "spacing_m": 500,
-    "p_detect": 0.049,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 137.55276807792976
+    "p": 0.0
    },
    {
     "spacing_m": 1000,
-    "p_detect": 0.01275,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 145.15841082788566
+    "p": 0.0
    },
    {
     "spacing_m": 2000,
-    "p_detect": 0.0035,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 137.8147021720196
+    "p": 0.0
+   }
+  ],
+  "day (neutral, D)|10": [
+   {
+    "spacing_m": 250,
+    "p": 0.0
    },
    {
-    "spacing_m": 6000,
-    "p_detect": 0.00025,
-    "mean_sensors": 1.0,
-    "mean_dist_m": 103.79424537215655
+    "spacing_m": 500,
+    "p": 0.0
+   },
+   {
+    "spacing_m": 1000,
+    "p": 0.0
+   },
+   {
+    "spacing_m": 2000,
+    "p": 0.0
+   }
+  ],
+  "day (neutral, D)|25": [
+   {
+    "spacing_m": 250,
+    "p": 0.0
+   },
+   {
+    "spacing_m": 500,
+    "p": 0.0
+   },
+   {
+    "spacing_m": 1000,
+    "p": 0.0
+   },
+   {
+    "spacing_m": 2000,
+    "p": 0.0
    }
   ]
  },
- "axis_increment_ug_m3": {
-  "night (stable, E-F)": {
-   "100": 1005.871721086017,
-   "250": 194.35301623340195,
-   "500": 57.92444523429711,
-   "1000": 18.760786595177798,
-   "2000": 6.734912634675859
-  },
-  "day (neutral, D)": {
-   "100": 159.19797567306298,
-   "250": 27.351181034719197,
-   "500": 7.410535812830897,
-   "1000": 2.1293707097186165,
-   "2000": 0.6698098612496327
-  }
- },
- "avoided": [
-  {
-   "response_h": 0.25,
-   "avoided_kg": 3.7500000000000004
-  },
-  {
-   "response_h": 0.5,
-   "avoided_kg": 3.5000000000000004
-  },
-  {
-   "response_h": 0.75,
-   "avoided_kg": 3.25
-  },
-  {
-   "response_h": 1.0,
-   "avoided_kg": 3.0
-  },
-  {
-   "response_h": 1.25,
-   "avoided_kg": 2.7500000000000004
-  },
-  {
-   "response_h": 1.5,
-   "avoided_kg": 2.5
-  },
-  {
-   "response_h": 1.75,
-   "avoided_kg": 2.25
-  },
-  {
-   "response_h": 2.0,
-   "avoided_kg": 2.0
-  },
-  {
-   "response_h": 2.25,
-   "avoided_kg": 1.7500000000000002
-  },
-  {
-   "response_h": 2.5,
-   "avoided_kg": 1.5
-  },
-  {
-   "response_h": 2.75,
-   "avoided_kg": 1.25
-  },
-  {
-   "response_h": 3.0,
-   "avoided_kg": 1.0
-  },
-  {
-   "response_h": 3.25,
-   "avoided_kg": 0.75
-  },
-  {
-   "response_h": 3.5,
-   "avoided_kg": 0.5
-  },
-  {
-   "response_h": 3.75,
-   "avoided_kg": 0.25
-  },
-  {
-   "response_h": 4.0,
-   "avoided_kg": 0.0
-  }
- ],
- "scenario": {
-  "spacing_m": 500,
-  "sensors_per_25km2": 121,
-  "p_detect_night": 0.3185,
-  "response_h": 0.8594487055230575,
-  "avoided_kg_per_fire": 3.140551294476943,
-  "unattended_kg_per_fire": 4.0
- },
- "patrol": [
+ "response": [
   {
    "drones": 0,
+   "teams": 2,
    "revisit_h": Infinity,
-   "p_detect_in_burn": 0.32135,
-   "mean_detect_h": 2.8270725,
-   "emission_avoided_pct": 25.306312500000004
+   "p_found": 0.008,
+   "mean_detect_h": 3.976,
+   "emission_prevented_pct": 0.048000000000003595
   },
   {
    "drones": 1,
+   "teams": 2,
    "revisit_h": 3.3068783068783074,
-   "p_detect_in_burn": 1.0,
-   "mean_detect_h": 1.2264687538510548,
-   "emission_avoided_pct": 56.83828115372363
+   "p_found": 1.0,
+   "mean_detect_h": 1.6680796272060556,
+   "emission_prevented_pct": 14.173667778218835
   },
   {
    "drones": 2,
+   "teams": 2,
    "revisit_h": 1.6534391534391537,
-   "p_detect_in_burn": 1.0,
-   "mean_detect_h": 0.6591792577193013,
-   "emission_avoided_pct": 71.02051855701747
+   "p_found": 1.0,
+   "mean_detect_h": 0.8254233542338555,
+   "emission_prevented_pct": 23.42806232776029
   },
   {
    "drones": 4,
+   "teams": 2,
    "revisit_h": 0.8267195767195769,
-   "p_detect_in_burn": 1.0,
-   "mean_detect_h": 0.36940108288331436,
-   "emission_avoided_pct": 78.26497292791714
+   "p_found": 1.0,
+   "mean_detect_h": 0.40977580876223885,
+   "emission_prevented_pct": 29.726769986276082
+  },
+  {
+   "drones": 0,
+   "teams": 4,
+   "revisit_h": Infinity,
+   "p_found": 0.00925,
+   "mean_detect_h": 3.97225,
+   "emission_prevented_pct": 0.11100000000000554
+  },
+  {
+   "drones": 1,
+   "teams": 4,
+   "revisit_h": 3.3068783068783074,
+   "p_found": 1.0,
+   "mean_detect_h": 1.6172987799621006,
+   "emission_prevented_pct": 28.178301268931715
+  },
+  {
+   "drones": 2,
+   "teams": 4,
+   "revisit_h": 1.6534391534391537,
+   "p_found": 1.0,
+   "mean_detect_h": 0.8213724266448197,
+   "emission_prevented_pct": 44.491773032947755
+  },
+  {
+   "drones": 4,
+   "teams": 4,
+   "revisit_h": 0.8267195767195769,
+   "p_found": 1.0,
+   "mean_detect_h": 0.41611595979639376,
+   "emission_prevented_pct": 54.597101005090146
   }
  ]
 }

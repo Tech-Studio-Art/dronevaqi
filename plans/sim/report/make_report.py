@@ -64,12 +64,15 @@ rd0, rdE, rdH, rdP = road["no fence"], road["ESP fence"], road["ESP fence, half 
 a1 = amb["espfence_U1.0_PM25"]
 a1c = amb["espfence_U1.0_coarse"]
 a2 = amb["espfence_U2.0_PM25"]
-pat = {p["drones"]: p for p in sv["patrol"]}
-detN = {d["spacing_m"]: d["p_detect"] for d in sv["detection"]["night (stable, E-F)"]}
-detD = {d["spacing_m"]: d["p_detect"] for d in sv["detection"]["day (neutral, D)"]}
-ax = sv["axis_increment_ug_m3"]["night (stable, E-F)"]
-axd = sv["axis_increment_ug_m3"]["day (neutral, D)"]
-kg_fire = sv["scenario"]["unattended_kg_per_fire"]
+import sys
+sys.path.insert(0, HERE)
+from make_figs import city_increment  # noqa: E402
+rp = {(x["drones"], x["teams"]): x["emission_prevented_pct"] for x in sv["response"]}
+FN, FD = sv["field"]["night (stable, E-F)"], sv["field"]["day (neutral, D)"]
+p_hot = max(d["p"] for d in sv["detection"]["night (stable, E-F)|10"])
+city100, city10 = city_increment(1.0), city_increment(0.1)
+best = rp[(2, 4)]
+g_night = sv["hotspot_g_per_night"] * best / 100
 mix_range = f"{min(prt2, hz60):.0f} % to {max(prt2, hz60):.0f} %" if prt2 is not None else f"up to {hz60:.0f} %"
 
 TITLE = ("Drone V AQI pilot proposal: inversion mixing, electrostatic wind fences and 24x7 pollution-source "
@@ -92,13 +95,14 @@ A("Each winter, the air in Delhi becomes very dangerous. After Diwali and during
 A("This report recommends a pilot project to test three control techniques. Technique 1 is inversion mixing. Heavy-lift "
   "drones push cleaner air from above the inversion down to street level. Technique 2 is the electrostatic wind fence. "
   "The fence charges particles and collects them on metal plates. The wind moves the air through the fence, so the fence "
-  "needs no fans. Technique 3 is 24x7 pollution-source surveillance. A network of low-cost sensors and patrol drones finds "
-  "open fires and other sources quickly, so that ground teams can stop them.")
+  "needs no fans. Technique 3 is 24x7 pollution-source surveillance. Patrol drones with thermal cameras find open "
+  "waste fires quickly, so that ground teams can stop them.")
 A(f"We did all the work in this report with computer simulations. The simulations use standard methods from the "
   f"scientific literature. The results are as follows. Inversion mixing with 100 heavy drones decreased street-level PM "
-  f"by {mix_range} in 30 minutes over a 500 m × 500 m zone. An electrostatic fence between a road and a footpath decreased "
-  f"footpath PM2.5 by {f0(100 * (1 - rdE['2.5'] / rd0['2.5']))} %. Surveillance with a 500 m sensor grid and two patrol "
-  f"drones prevented {f0(pat[2]['emission_avoided_pct'])} % of the PM2.5 from each open waste fire.")
+  f"by {mix_range} in 30 minutes. The zone was 500 m × 500 m. An electrostatic fence between a road and a footpath decreased "
+  f"footpath PM2.5 by {f0(100 * (1 - rdE['2.5'] / rd0['2.5']))} %. Surveillance with two patrol drones and four ground "
+  f"teams prevented {best:.0f} % of the PM2.5 from a hotspot of 100 small waste fires. PM sensors cannot find these "
+  f"small fires, but together the fires can add up to {city100:.0f} µg/m³ to the PM2.5 of the city.")
 A("These numbers are calculations, not measurements. A field pilot is necessary to measure the real values. We ask the Government "
   "of NCT of Delhi and its agencies to support a pilot in winter 2027. The three techniques can also operate in other "
   "Indian cities that have the same winter problem.")
@@ -160,14 +164,19 @@ A(f"We ran two configurations. In the first configuration, only background air f
   f"footpath. We compared no fence, a passive fence (no electric charge) and the electrostatic fence. We also ran the "
   f"electrostatic fence with half the migration velocity, as a conservative case.")
 A("D. Technique 3: 24x7 source surveillance")
-A(f"We used the Gaussian plume model with the Briggs urban dispersion coefficients {c('hanna')}. The source is an "
-  f"open fire of domestic waste. It burns 100 kg/h with a PM2.5 emission factor of 10 g/kg {c('wiedinmyer')}. As a result, "
-  f"the source emits {sv['Q_g_s']:.2f} g/s of PM2.5. Without action, the fire burns for 4 hours.")
-A(f"Low-cost PM sensors {c('snyder')} are on a square grid at a height of 3 m. A sensor finds a fire when the plume "
-  f"adds more than {sv['threshold_ug_m3']:.0f} µg/m³ to its 15-minute average. We calculated the probability of "
-  f"detection with 4,000 random fire positions and wind directions. Patrol drones with thermal cameras fly a fixed "
-  f"route over a 25 km² district. A ground team arrives 30 minutes after detection and stops the fire. Satellite fire "
-  f"data {c('schroeder')} covers crop-residue fires outside the city.")
+A(f"The source is a hotspot of 100 small open fires of domestic waste in a 500 m × 500 m area. Each fire burns "
+  f"100 g of waste per hour for 4 hours. The PM2.5 emission factor is 10 g/kg {c('wiedinmyer')}. As a result, each "
+  f"fire emits 1 g/h of PM2.5 and the hotspot emits {sv['hotspot_g_h']:.0f} g/h.")
+A(f"We calculated the PM2.5 field of the hotspot with the Gaussian plume model and the Briggs urban dispersion "
+  f"coefficients {c('hanna')}. The field is the sum of the plumes of all fires. Low-cost PM sensors {c('snyder')} are "
+  f"on a square grid at a height of 3 m. The network gives an alert when the 1-hour average at one sensor increases "
+  f"by more than 10 µg/m³. We calculated the probability of detection with 400 random hotspots and wind directions.")
+A(f"Patrol drones with thermal cameras fly a fixed route over a 25 km² district. When a drone finds a hotspot, it "
+  f"makes a map of all fires in 6 minutes. Then the ground teams go to each fire. With a map, a team needs 6 minutes "
+  f"for each fire. Without a map, a team needs 20 minutes for each fire. Satellite fire data {c('schroeder')} covers "
+  f"crop-residue fires outside the city.")
+A(f"To show the effect of many hotspots on the whole city, we used a box model of the city air {c('stull')}. The box "
+  f"has the area of Delhi (1,483 km²), a mixing height of 150 m and a wind of 1 m/s.")
 
 # ---------------------------------------------------------------- results
 A("<a href='#results' id='results'>Results</a>")
@@ -221,25 +230,26 @@ A(f"One metre of fence cleans {a1['CADR_per_m']:.1f} m³/s of air at a wind of 1
   f"filter uses more than 2,000 J/m³.")
 
 A("C. Technique 3: 24x7 source surveillance")
-A(f"Figure 7 shows the plume from one waste fire on a calm night. The fire adds {ax['100']:.0f} µg/m³ at 100 m, "
-  f"{ax['500']:.0f} µg/m³ at 500 m and {ax['1000']:.0f} µg/m³ at 1 km downwind. In daytime, the values are much "
-  f"lower: {axd['100']:.0f}, {axd['500']:.0f} and {axd['1000']:.0f} µg/m³. As a result, one small fire can double the PM in "
-  f"its street at night.")
+A(f"Each small fire adds only {sv['single_fire_100m_night_ug_m3']:.1f} µg/m³ at 100 m downwind on a calm night. Figure 7 "
+  f"shows the field of one hotspot of 100 fires. Inside the hotspot, the mean increase is {FN['zone_mean']:.1f} µg/m³ at "
+  f"night and {FD['zone_mean']:.1f} µg/m³ in daytime. At 1 km downwind, the increase at night is "
+  f"{FN['downwind_1km']:.1f} µg/m³.")
 B.extend(fig(7, "aqipilot_fig6_fire_plume.png",
-             "PM2.5 added by one waste fire (100 kg/h) on a calm night, with a 500 m sensor grid. The orange line "
-             "shows the 25 µg/m³ detection limit."))
-A(f"Fixed sensors alone find few fires (Figure 8a). At night, a 250 m grid found {100 * detN[250]:.0f} % of fires. "
-  f"A 500 m grid found {100 * detN[500]:.0f} %. A 1 km grid found {100 * detN[1000]:.0f} %. In daytime, the values "
-  f"are lower. A grid with a spacing of approximately 6 km, which is the scale of the present regulatory network, "
-  f"found almost no single fires.")
-A(f"Patrol drones change the result (Figure 8b). With a 500 m sensor grid only, the system prevented "
-  f"{pat[0]['emission_avoided_pct']:.0f} % of the PM2.5 from each fire. One patrol drone increased this to "
-  f"{pat[1]['emission_avoided_pct']:.0f} %. Two drones gave {pat[2]['emission_avoided_pct']:.0f} % and four drones gave "
-  f"{pat[4]['emission_avoided_pct']:.0f} %. With two drones, the mean time to find a fire was "
-  f"{60 * pat[2]['mean_detect_h']:.0f} minutes.")
+             "PM2.5 added by one hotspot of 100 small waste fires (100 g of waste per hour each) on a calm night. "
+             "The orange square is the 500 m × 500 m hotspot."))
+A(f"These values are much less than the background of 300 µg/m³ and less than the noise of low-cost sensors. As a "
+  f"result, the sensor network found the hotspot in only {100 * p_hot:.0f} % of cases, at all grid spacings. PM sensors "
+  f"cannot find small fires. Thermal cameras on patrol drones are necessary.")
+A(f"Many hotspots together have a large effect (Figure 8a). If 10 % of Delhi has hotspots of this size, the PM2.5 of "
+  f"the city increases by approximately {city10:.0f} µg/m³. If all of Delhi has such hotspots, the increase is "
+  f"approximately {city100:.0f} µg/m³. This is approximately {100 * city100 / 300:.0f} % of the background.")
+A(f"Figure 8b shows the PM2.5 emission that surveillance prevents in one hotspot. Without patrol drones, the system "
+  f"prevented almost no emission. With two drones and two ground teams, it prevented {rp[(2, 2)]:.0f} %. With two "
+  f"drones and four ground teams, it prevented {rp[(2, 4)]:.0f} %. Each hotspot has 100 fires, so the number of ground "
+  f"teams limits the result.")
 B.extend(fig(8, "aqipilot_fig7_surveillance.png",
-             "Surveillance performance. (a) Fires found by fixed sensors. (b) PM2.5 emission prevented per fire in "
-             "a 25 km² district."))
+             "Surveillance results. (a) City-wide PM2.5 added by small fires, for different areas of the city with "
+             "hotspots. (b) PM2.5 emission prevented in one hotspot, for different numbers of patrol drones and ground teams."))
 
 # ---------------------------------------------------------------- impact
 A("<a href='#impact' id='impact'>Environmental impact</a>")
@@ -251,9 +261,9 @@ A(table([["Technique", "Likely benefit", "Area of benefit", "Possible negative e
          ["Electrostatic wind fence (per 100 m)", f"Footpath PM2.5 approximately {100 * (1 - rdE['2.5'] / rd0['2.5']):.0f} % lower; "
           f"coarse PM {100 * (1 - a1c['pedestrian_C']['x=2m']):.0f} % lower", "Strip 40 m deep behind the fence",
           "Ozone from the ionizer; waste dust from plate cleaning"],
-         ["24x7 surveillance (25 km² district)", f"{pat[2]['emission_avoided_pct']:.0f} % of PM2.5 from each fire prevented "
-          f"(approximately {kg_fire * pat[2]['emission_avoided_pct'] / 100:.1f} kg per fire)", "Whole district",
-          "Privacy of camera data; drone noise"]]))
+         ["24x7 surveillance (25 km² district)", f"{best:.0f} % of the PM2.5 from each hotspot prevented (approximately "
+          f"{g_night:.0f} g per hotspot each night); city PM2.5 up to {city100 * best / 100:.0f} µg/m³ lower if used in all of Delhi",
+          "Whole district", "Privacy of camera data; drone noise"]]))
 A(f"Inversion mixing does not remove PM from the atmosphere. It mixes PM into a deeper layer. This decreases the "
   f"concentration that people breathe. At the average population density of Delhi (Census of India 2011), a 25 ha zone "
   f"contains approximately 2,800 people.")
@@ -261,8 +271,9 @@ A(f"The electrostatic fence removes PM from the air. Each metre of fence collect
   f"severe episode. The operator must collect this dust and send it to an approved waste facility. Ionizers can make "
   f"ozone {c('boelter')}. The design must use positive corona and carbon-fibre emitters to keep ozone low. The pilot "
   f"must measure ozone near the fence.")
-A(f"Surveillance prevents emissions at the source. Each waste fire that the system stops early prevents approximately "
-  f"{kg_fire * pat[2]['emission_avoided_pct'] / 100:.1f} kg of PM2.5. Open burning also makes toxic gases "
+A(f"Surveillance prevents emissions at the source. In one hotspot, the system prevents approximately {g_night:.0f} g of "
+  f"PM2.5 each night. The drone maps also show the sites where people burn waste again and again. The city can use "
+  f"these maps to improve waste collection and to prevent the fires. Open burning also makes toxic gases "
   f"{c('wiedinmyer')}, so early action gives an additional health benefit.")
 
 # ---------------------------------------------------------------- pilot
@@ -282,15 +293,17 @@ A("A. Test zones")
 A("1. Inversion mixing: one 500 m × 500 m zone at the edge of the city, in a green zone for drone operation. Start with "
   "10 heavy drones, then increase to the full fleet if the first results are positive.")
 A("2. Electrostatic fence: 100 m of fence on a road wall next to a school or hospital footpath.")
-A("3. Surveillance: one 25 km² district with known waste-burning problems. Use 121 sensors on a 500 m grid and 2 patrol drones.")
+A("3. Surveillance: one 25 km² district with known waste-burning problems. Use 2 patrol drones with thermal cameras, "
+  "4 ground teams and a sensor grid for background data.")
 A("B. Measurements")
 A(table([["Technique", "Measurement", "Instrument", "Pass criterion"],
          ["Inversion mixing", "PM profile 0 m to 300 m; street PM in test and control zones; noise",
           "Scout drone sensors; reference monitor; sound meter", "Street PM at least 10 % lower than control on calm nights"],
          ["Electrostatic fence", "PM2.5 and PM10 at 2 m, 10 m and 40 m behind the fence; ozone; power",
           "Calibrated sensors; ozone analyser", "PM2.5 at least 20 % lower; ozone within national standard"],
-         ["Surveillance", "Time to find a fire; time to stop it; number of fires", "Sensor network; drone logs; field reports",
-          "Mean time to find a fire less than 60 minutes"]]))
+         ["Surveillance", "Number of fires found; time to find a hotspot; time to stop all fires",
+          "Drone thermal camera logs; field counts by ground teams", "Drones find at least 90 % of the fires that ground "
+          "teams count; mean time to find a hotspot less than 60 minutes"]]))
 A("C. Support that we request")
 A("1. Permission to operate drones at night and above 120 m in the pilot zones.")
 A("2. Access to sites, walls and electrical power for the fence and the sensors.")
@@ -318,7 +331,8 @@ A("1. Inversion mixing: the k-ε model calculates too much mixing in stable air.
 A("2. Electrostatic fence: the model is two-dimensional, so it does not include air flow around the ends of the fence. "
   "The migration velocities come from industrial practice. The model does not include dirt on the plates or calm air.")
 A("3. Surveillance: the Gaussian plume model is approximate near buildings. The emission factor of waste fires has a "
-  "large range. The model does not include false alarms.")
+  "large range. The model assumes that a thermal camera at patrol height can find a fire that burns 100 g/h. The pilot "
+  "must test this. The model does not include false alarms.")
 A("B. Why the simulations are a correct basis for a pilot")
 A("Each model uses published and tested methods. Where a model has a known error, we show its direction and we give a "
   "conservative case. Each technique shows a clear benefit even in the conservative cases. A pilot is the correct next "
@@ -326,7 +340,7 @@ A("Each model uses published and tested methods. Where a model has a known error
 A("C. Conclusion")
 A(f"The simulations show that each technique can decrease the PM that people breathe. Inversion mixing decreases "
   f"street-level PM by {mix_range} in a zone. The electrostatic fence decreases footpath PM2.5 by approximately "
-  f"{100 * (1 - rdE['2.5'] / rd0['2.5']):.0f} %. Surveillance prevents most of the emission from each open fire. We "
+  f"{100 * (1 - rdE['2.5'] / rd0['2.5']):.0f} %. PM sensors cannot find small waste fires, but patrol drones and ground teams can prevent approximately {best:.0f} % of their emission. We "
   f"recommend a pilot in winter 2027 to measure these effects in Delhi.")
 
 # ---------------------------------------------------------------- references
@@ -343,8 +357,9 @@ A(table([["Parameter", "Value"],
          ["Fleet", "100 drones, 50 m grid, 500 m × 500 m"],
          ["Fence", "6 m high, 0.5 m deep, K = 1.5, plate area 20 m²/m³"],
          ["Migration velocity", "PM2.5 0.04 m/s; coarse PM 0.12 m/s"],
-         ["Waste fire", "100 kg/h, 10 g PM2.5/kg, 4 h without action"],
-         ["Sensor threshold", "25 µg/m³ above background (15-min average)"],
+         ["Waste-fire hotspot", "100 fires in 500 m × 500 m; 100 g waste/h each; 10 g PM2.5/kg; 4 h without action"],
+         ["Sensor alert", "10 µg/m³ above background (1-hour average)"],
+         ["Ground teams", "6 min per fire with a drone map; 20 min per fire without a map"],
          ["Patrol drone", "36 km/h, 300 m camera width, 70 % flight time"]]))
 A("All simulation code and data are in the Drone V AQI repository (github.com/Tech-Studio-Art/dronevaqi), "
   "directory plans/sim. This text follows the rules of ASD-STE100 Simplified Technical English.")

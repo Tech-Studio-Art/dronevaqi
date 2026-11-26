@@ -150,54 +150,60 @@ def esp_results():
 
 
 # ---------------------------------------------------------------- surveillance
+def city_increment(frac, hotspot_g_h=100.0, area_km2=1483.0, L_m=38500.0, H_m=150.0, u=1.0):
+    """Box model (Stull 1988): increment = emission flux x fetch / (wind x mixing height)."""
+    flux = frac * hotspot_g_h / 3600 * (area_km2 / 0.25) / (area_km2 * 1e6)   # g/m2/s
+    return flux * L_m / (u * H_m) * 1e6
+
+
 def surveillance():
     S = os.path.join(SIM, "surveillance")
     r = json.load(open(os.path.join(S, "results.json")))
-    X, Y, C = np.load(os.path.join(S, "plume_night.npy"))
-    fig, ax = plt.subplots(figsize=(7.4, 3.3), constrained_layout=True)
+    X, Y, C = np.load(os.path.join(S, "hotspot_night.npy"))
+    fx, fy = np.load(os.path.join(S, "hotspot_fires.npy"))
+    fig, ax = plt.subplots(figsize=(7.4, 3.4), constrained_layout=True)
     from matplotlib.colors import BoundaryNorm
-    lv = [5, 10, 25, 50, 100, 250, 500, 1000, 5000]
+    lv = [0.25, 0.5, 1, 2, 4, 8, 16]
     cm = LinearSegmentedColormap.from_list("p", ["#e8f1fc", "#9ec5f4", "#3987e5", "#1c5cab", "#0d366b"])
-    C = np.where(C < 5, np.nan, C)
-    a = ax.contourf(X, Y, C, levels=lv, cmap=cm, norm=BoundaryNorm(lv, cm.N))
-    ax.contour(X, Y, C, levels=[25], colors=[CAT[1]], linewidths=1.5)
+    a = ax.contourf(X, Y, np.where(C < lv[0], np.nan, C), levels=lv, cmap=cm, norm=BoundaryNorm(lv, cm.N), extend="max")
+    ax.add_patch(Rectangle((-250, -250), 500, 500, fill=False, ec=CAT[1], lw=1.5))
+    ax.scatter(fx, fy, s=5, color=CAT[1], zorder=3, label="Small waste fire (100 g/h)")
     g = np.arange(-500, 2001, 500)
     gx, gy = np.meshgrid(g, np.arange(-500, 501, 500))
-    ax.scatter(gx, gy, marker="s", s=22, color=INK, zorder=3, label="Sensor, 500 m grid")
-    ax.plot([0], [0], marker="*", ms=14, color=CAT[1], zorder=4, label="Waste fire, 100 kg/h")
-    ax.set_xlim(-150, 1600)
-    ax.set_ylim(-550, 550)
+    ax.scatter(gx, gy, marker="s", s=20, color=INK, zorder=3, label="Sensor, 500 m grid")
+    ax.set_xlim(-600, 2000)
+    ax.set_ylim(-700, 700)
     ax.set_aspect("equal")
     ax.grid(False)
-    ax.set_xlabel("Downwind distance (m), night, wind 1 m/s")
-    ax.set_ylabel("Crosswind (m)")
-    ax.legend(loc="upper right", fontsize=8)
+    ax.set_xlabel("Distance (m), wind 1 m/s towards +x, night")
+    ax.set_ylabel("Distance (m)")
+    ax.legend(loc="upper right", fontsize=7.5)
     cb = fig.colorbar(a, ax=ax, shrink=0.9)
     cb.set_label("PM2.5 added (µg/m³)")
-    cb.set_ticks(lv[:-1])
     save(fig, "aqipilot_fig6_fire_plume.png")
 
-    fig, axs = plt.subplots(1, 2, figsize=(7.6, 3.2), constrained_layout=True)
-    for i, (cls, lab) in enumerate((("night (stable, E-F)", "Night, stable air"), ("day (neutral, D)", "Day, neutral air"))):
-        d = r["detection"][cls]
-        axs[0].plot([x["spacing_m"] for x in d], [100 * x["p_detect"] for x in d], marker="o", ms=4, color=CAT[i], label=lab)
-    axs[0].set_xscale("log")
-    axs[0].set_xticks([250, 500, 1000, 2000, 6000])
-    axs[0].set_xticklabels(["250", "500", "1000", "2000", "6000"])
-    axs[0].minorticks_off()
-    axs[0].set_xlabel("Sensor spacing (m)")
-    axs[0].set_ylabel("Fires found by sensors (%)")
-    axs[0].set_title("(a) Fixed sensors only", fontsize=9)
-    axs[0].legend(fontsize=8)
-    p = r["patrol"]
-    lbl = ["Sensors\nonly", "+1 drone", "+2 drones", "+4 drones"]
-    vals = [x["emission_avoided_pct"] for x in p]
-    axs[1].bar(lbl, vals, color=[CAT[3]] + [CAT[0]] * 3, width=0.6)
-    for i, v in enumerate(vals):
-        axs[1].text(i, v + 1.5, f"{v:.0f} %", ha="center", fontsize=8.5)
-    axs[1].set_ylim(0, 100)
-    axs[1].set_ylabel("PM2.5 emission prevented per fire (%)")
-    axs[1].set_title("(b) 25 km² district, 500 m sensor grid", fontsize=9)
+    fig, axs = plt.subplots(1, 2, figsize=(7.6, 3.3), constrained_layout=True)
+    fr = np.linspace(0, 1, 21)
+    axs[0].plot(100 * fr, [city_increment(f) for f in fr], color=CAT[0])
+    axs[0].set_xlabel("City area with a 100-fire hotspot (%)")
+    axs[0].set_ylabel("City-wide PM2.5 added (µg/m³)")
+    axs[0].set_title("(a) Many small fires, Delhi, calm night", fontsize=9)
+    resp = r["response"]
+    lbl = ["0", "1", "2", "4"]
+    w = 0.38
+    for j, (t, col) in enumerate(((2, CAT[3]), (4, CAT[0]))):
+        v = [next(x["emission_prevented_pct"] for x in resp if x["drones"] == int(d) and x["teams"] == t) for d in lbl]
+        xs = np.arange(4) + (j - 0.5) * w
+        axs[1].bar(xs, v, width=w, color=col, label=f"{t} ground teams")
+        for xx, vv in zip(xs, v):
+            axs[1].text(xx, vv + 1.2, f"{vv:.0f}", ha="center", fontsize=8)
+    axs[1].set_xticks(range(4))
+    axs[1].set_xticklabels(lbl)
+    axs[1].set_xlabel("Patrol drones (25 km² district)")
+    axs[1].set_ylabel("Hotspot PM2.5 emission prevented (%)")
+    axs[1].set_ylim(0, 70)
+    axs[1].legend(fontsize=8, loc="upper left")
+    axs[1].set_title("(b) One hotspot of 100 fires", fontsize=9)
     save(fig, "aqipilot_fig7_surveillance.png")
 
 
