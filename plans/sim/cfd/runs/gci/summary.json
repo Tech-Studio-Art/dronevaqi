@@ -27,15 +27,6 @@
    "gci_fine_pct": 2.543838776153922,
    "note": "monotonic convergence"
   },
-  "road_red_40m": {
-   "fine": 32.09263982191497,
-   "medium": 32.041239756707576,
-   "coarse": NaN,
-   "p": NaN,
-   "f_ext": NaN,
-   "gci_fine_pct": NaN,
-   "note": "monotonic divergence"
-  },
   "single_pass_eff": {
    "fine": 50.44640008782502,
    "medium": 50.61346090526566,
@@ -45,5 +36,39 @@
    "gci_fine_pct": 2.398509054189225,
    "note": "monotonic divergence"
   }
+ },
+ "mixing": {
+  "red_10min": {
+   "fine": 16.396577248793697,
+   "medium": 15.989155225495665,
+   "coarse": 16.89538081873685,
+   "p": null,
+   "f_ext": null,
+   "gci_fine_pct": 17.996507917430645,
+   "note": "oscillatory convergence"
+  },
+  "red_30min": {
+   "fine": 20.48169942636353,
+   "medium": 20.34088134897636,
+   "coarse": 19.97580326320101,
+   "p": 2.7487450429994467,
+   "f_ext": 20.57012237373404,
+   "gci_fine_pct": 0.5396460611606831,
+   "note": "monotonic convergence"
+  },
+  "red_30min_0_10m": {
+   "fine": 18.670367623338645,
+   "medium": 18.505084222206314,
+   "coarse": 18.294630269616352,
+   "p": 0.6971255175361347,
+   "f_ext": 19.27515551740489,
+   "gci_fine_pct": 4.0491161332988215,
+   "note": "monotonic convergence"
+  }
+ },
+ "mixing_cells": {
+  "coarse": 3680,
+  "medium": 7280,
+  "fine": 14720
  }
 }

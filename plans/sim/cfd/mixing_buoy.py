@@ -80,7 +80,7 @@ solvers {
   p_rghFinal { $p_rgh; relTol 0; }
   "(U|k|epsilon)" { solver PBiCGStab; preconditioner DILU; tolerance 1e-8; relTol 0.01; }
   "(U|k|epsilon)Final" { $U; relTol 0; }
-  h { solver PBiCGStab; preconditioner DILU; tolerance 1e-3; relTol 0.01; }
+  h { solver PBiCGStab; preconditioner DILU; tolerance 1e-12; relTol 0.001; maxIter 200; }
   hFinal { $h; relTol 0; }
 }
 PIMPLE { momentumPredictor yes; nOuterCorrectors 1; nCorrectors 2; nNonOrthogonalCorrectors 0;

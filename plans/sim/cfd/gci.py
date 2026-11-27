@@ -98,7 +98,8 @@ def report():
     fl = os.path.join(OUT, "fence_levels.json")
     if os.path.exists(fl):
         L = json.load(open(fl))
-        summary["fence"] = {k: gci(L["fine"][k], L["medium"][k], L["coarse"][k]) for k in L["medium"]}
+        summary["fence"] = {k: gci(L["fine"][k], L["medium"][k], L["coarse"][k]) for k in L["medium"]
+                            if all(L[t][k] == L[t][k] for t in ("fine", "medium", "coarse"))}   # skip NaN (no cells in window)
     ml = mixing_levels()
     if ml:
         summary["mixing"] = {k: gci(ml["fine"][k], ml["medium"][k], ml["coarse"][k]) for k in ml["medium"] if k != "cells"}
