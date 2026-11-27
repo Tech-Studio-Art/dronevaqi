@@ -222,8 +222,13 @@ A(f"The standard k-ε model gave {hz60:.0f} % at 60 m and {hz90:.0f} % at 90 m. 
   f"coefficient (1.0), the decrease at 60 m was {bcg1:.0f} %. As a result, the choice of turbulence model changes the "
   f"result by less than {max(abs(hz60 - b60), abs(hz90 - b90), abs(bcg1 - b60)) + 0.5:.0f} percentage points.")
 A(f"Quad drones gave only {bq:.0f} %, because their jets are too weak to go through the stable air. Without drones, the "
-  f"change was less than 0.2 %. Wind replaces the air in the zone and decreases the effect. With a wind of 1 m/s, we "
-  f"calculate approximately one half of these values.")
+  f"change was less than 0.2 %.")
+A("Note on wind: these values are for calm air. A later three-dimensional simulation of the full fleet in a wind of "
+  "1 m/s at 10 m height changed this result. The jet of each drone bent over and stopped approximately 30 m below the "
+  "drone. As a result, drones on a 50 m grid did not decrease street-level PM. When the drones flew in tight clusters, "
+  "their jets joined and reached the ground. Four clusters of 25 drones at the upwind edge of the zone decreased the "
+  "zone-mean PM by approximately 9 %, and up to 30 % near each cluster. At a wind of 2 m/s, the benefit was small. "
+  "As a result, the operation must use a spread fleet only in calm air and clusters in light wind.")
 B.extend(fig(2, "aqipilot_fig2_mixing_time.png",
              "Street-level PM during inversion mixing, as a percentage of the start value. 100 drones on a 50 m grid "
              "over a 500 m × 500 m zone. Solid lines: best estimate (buoyant k-ε). Dashed line: standard k-ε, for comparison."))
@@ -394,9 +399,10 @@ A("Open waste burning occurs in cities across India. A sensor grid and patrol dr
 # ---------------------------------------------------------------- discussion
 A("<a href='#discussion' id='discussion'>Discussion</a>")
 A("A. Limits of the simulations")
-A("1. Inversion mixing: the unit cell does not include wind or the edges of the zone. The buoyant turbulence model "
-  "agrees with field data near the ground, but we did not test it for a jet in stable air. In Phase 1, we will use a "
-  "three-dimensional model of the full fleet with wind.")
+A("1. Inversion mixing: the unit cell does not include wind or the edges of the zone. Wind bends the jets, so the "
+  "results apply to calm air (see the note on wind in the results). The buoyant turbulence model agrees with field "
+  "data near the ground, but we did not test it for a jet in stable air. The pilot must measure the wind at drone "
+  "height before each operation.")
 A("2. Electrostatic fence: the model is two-dimensional, so it does not include air flow around the ends of the fence. "
   "The migration velocities come from industrial practice. The model does not include dirt on the plates or calm air.")
 A("3. Surveillance: the Gaussian plume model is approximate near buildings. The emission factor of waste fires has a "
