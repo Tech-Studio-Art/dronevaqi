@@ -126,9 +126,21 @@ A("**Method.** buoyantBoussinesqPimpleFoam (transient URANS, Boussinesq buoyancy
   "over 500 × 500 m are represented by one axisymmetric unit cell (R = 28.2 m, symmetry outer wall), the "
   "standard periodic-array treatment. Each drone = actuator disk with thrust = weight. PM is carried exactly by "
   "the potential-temperature field (same transport equation, Sc_t = Pr_t = 0.7; a linear θ–PM relation is "
-  "preserved). Analytic check: max penetration of a momentum jet into linear stratification "
-  "≈ 2.9 M^¼ N^-½ (Turner 1966; List 1982).\n")
-A("| Case | Hover height (m) | Jet penetration, theory (m) | Breathing-zone (0–2 m) PM after 30 min | Reduction |")
+  "preserved). Jet check: max penetration of a momentum jet into linear stratification "
+  "≈ C M^¼ N^-½ (Morton, Taylor & Turner 1956; List 1982). The MTT entrainment model with α = 0.076 gives the "
+  "values below; it was validated against the CFD in step 1 (last section).\n")
+import math as _m
+import sys as _s
+_s.path.insert(0, HERE)
+import mtt as _mtt
+
+
+def _pen(T, A_):
+    return _mtt.penetration(T / 1.25, A_ * _m.sqrt(T / (2 * 1.25 * A_)), _m.sqrt(9.81 / 285 * 0.05), 0.076)
+
+
+_AREA = {"quad_z30": 4 * 0.0507, "heavy_z60": 4 * 1.474, "heavy_z90": 4 * 1.474}
+A("| Case | Hover height (m) | Jet penetration, MTT model (m) | Breathing-zone (0–2 m) PM after 30 min | Reduction |")
 A("|---|---|---|---|---|")
 lab = {"no_drone": "no drones", "quad_z30": "100 quads", "heavy_z60": "100 heavy", "heavy_z90": "100 heavy"}
 for k in ("no_drone", "quad_z30", "heavy_z60", "heavy_z90"):
@@ -136,7 +148,7 @@ for k in ("no_drone", "quad_z30", "heavy_z60", "heavy_z90"):
     if not r:
         continue
     s = r["series"]
-    A(f"| {lab[k]} | {f(r['hover_z'], 0) if r['thrust_N'] else '–'} | {f(r['jet_penetration_theory_m'], 0) if r['thrust_N'] else '–'} | "
+    A(f"| {lab[k]} | {f(r['hover_z'], 0) if r['thrust_N'] else '–'} | {f(_pen(r['thrust_N'], _AREA[k]), 0) if r['thrust_N'] else '–'} | "
       f"{f(100 * s[-1]['z<2m'], 1)} % of initial surface PM (start {f(100 * s[0]['z<2m'], 1)} %) | "
       f"**{f(100 * (1 - s[-1]['z<2m'] / s[0]['z<2m']), 1)} %** |")
 A("\n![mixing](figures/mixing_timeseries.png)\n![mixing field](figures/mixing_field_heavy_z60.png)\n")
@@ -257,11 +269,80 @@ A("2. **ESP fences on flyovers / road edges** next to footpaths and schools: win
 A("3. **Clean-air showers** at bus shelters, school gates and metro exits: proven physics, kW-scale.")
 A("4. **Charged-mist units** for junction and construction hotspots (PM10-heavy dust episodes).")
 A("5. Drop: filter drones, ram-air bus filters for street air, fog nets for PM, bipolar agglomeration.\n")
+# ---------------------------------------------------------------- step 1: verification & validation
+G = J("gci/summary.json")
+VAL = J("validation/summary.json")
+MB = {}
+for _p in glob.glob(os.path.join(R, "mixing_buoy", "*", "result.json")):
+    MB[os.path.basename(os.path.dirname(_p))] = json.load(open(_p))
+if MB:
+    json.dump(MB, open(os.path.join(R, "mixing_buoy", "summary.json"), "w"), indent=1)
+else:
+    MB = J("mixing_buoy/summary.json") or {}
+if G or VAL:
+    A("## Step 1 – checks of the models (verification and validation)\n")
+    if G:
+        A("**Grid independence.** Coarse, medium (base) and fine meshes, refinement ratio √2; Grid Convergence "
+          "Index (GCI) after Celik et al. (2008).\n")
+        A("| Quantity | Coarse | Medium | Fine | Apparent order p | GCI (fine) | Convergence |")
+        A("|---|---|---|---|---|---|---|")
+        lab = {"red_30min": "Mixing: breathing-zone PM decrease at 30 min (%)",
+               "red_30min_0_10m": "Mixing: 0–10 m PM decrease at 30 min (%)",
+               "red_10min": "Mixing: breathing-zone PM decrease at 10 min (%)",
+               "amb_red_2m": "Fence: PM2.5 decrease 2 m behind (%)", "amb_red_40m": "Fence: PM2.5 decrease 40 m behind (%)",
+               "road_red_2p5m": "Fence: footpath PM2.5 decrease, road case (%)", "single_pass_eff": "Fence: single-pass capture, Deutsch–Anderson at the CFD through-flow speed (%)"}
+        for grp in ("mixing", "fence"):
+            for k, v in G.get(grp, {}).items():
+                A(f"| {lab.get(k, k)} | {f(v['coarse'], 2)} | {f(v['medium'], 2)} | {f(v['fine'], 2)} | "
+                  f"{'–' if v['p'] is None else f(v['p'], 2)} | {f(v['gci_fine_pct'], 2)} % | {v['note']} |")
+        A("")
+    if VAL:
+        jp = VAL["jet_penetration"]
+        A("**Validation.**\n")
+        A("| Check | Reference | CFD | Reference value |")
+        A("|---|---|---|---|")
+        for n in ("heavy", "quad"):
+            r = jp[n]
+            A(f"| Jet penetration into stable air ({n} drone) | MTT entrainment model, α = 0.05–0.10 (Morton, Taylor & "
+              f"Turner 1956) | {f(r['depth_cfd_mean_m'], 1)} m (implied α = {r['alpha_matching_cfd']:.3f}) | "
+              f"{f(r['mtt_depth_by_alpha']['0.1'], 0)}–{f(r['mtt_depth_by_alpha']['0.05'], 0)} m; "
+              f"{f(r['mtt_depth_by_alpha']['0.076'], 1)} m at α = 0.076 |")
+        sl = VAL["surface_layer_fits"]
+        for key, lab2 in (("std", "standard k-ε"), ("Cg=1", "buoyant k-ε, Cg = 1"), ("Cg=1.5", "buoyant k-ε, Cg = 1.5"),
+                          ("Cg=2", "buoyant k-ε, Cg = 2")):
+            if key in sl:
+                A(f"| Stable surface layer, φm(ζ) ({lab2}) | Businger et al. 1971: 1 + 4.7ζ; Dyer 1974: 1 + 5ζ; "
+                  f"Högström 1988: 1 + 6ζ | {sl[key]['intercept']:.2f} + {sl[key]['slope']:.2f}ζ | 1 + (4.7–6)ζ |")
+        for r in VAL["fence"]["screen"]:
+            A(f"| Fence through-flow, K = {r['K']:g} | screen theory 1/(1 + K/4) (Laws & Livesey 1978) | "
+              f"{r['cfd']:.3f} | {r['theory']:.3f} |")
+        cap = VAL["fence"]["capture"]
+        A(f"| Fence single-pass penetration (PM2.5, 1 m/s) | Deutsch–Anderson, plug flow (Mizuno 2000) | "
+          f"{cap['cfd_penetration']:.3f} | {cap['deutsch_anderson']:.3f} |")
+        A("\n![validation](figures/validation_step1b.png)\n")
+    if MB:
+        A("**Inversion mixing with the calibrated buoyant k-ε model.** buoyantPimpleFoam, Boussinesq "
+          "equation of state, potential-temperature form; Cg = 1.5 calibrated so the model reproduces the stable "
+          "surface-layer relations above (Cg = 1 is the OpenFOAM default).\n")
+        A("| Case | Model | Breathing-zone PM decrease at 30 min | 0–10 m decrease |")
+        A("|---|---|---|---|")
+        for k in ("no_drone", "quad_z30", "heavy_z60", "heavy_z60_cg1", "heavy_z90"):
+            if k in MB:
+                s_ = MB[k]["series"]
+                A(f"| {k} | buoyant k-ε, Cg = {MB[k].get('Cg')} | {100 * (1 - s_[-1]['z<2m'] / s_[0]['z<2m']):.1f} % | "
+                  f"{100 * (1 - s_[-1]['z<10m'] / s_[0]['z<10m']):.1f} % |")
+            if k in mix:
+                s_ = mix[k]["series"]
+                A(f"| {k} | standard k-ε | {100 * (1 - s_[-1]['z<2m'] / s_[0]['z<2m']):.1f} % | "
+                  f"{100 * (1 - s_[-1]['z<10m'] / s_[0]['z<10m']):.1f} % |")
+        A("")
+
 A("## Reproduce\n")
 A("See `README.md`. Main references: Menter 1994; Launder & Spalding 1974; Richards & Hoxey 1993; "
   "Franke et al. 2007 (COST 732); Tominaga & Stathopoulos 2007; Davies 1973; Hinds 1999; White 1951, 1963; "
   "Slinn 1983; Kraemer & Johnstone 1955; Fuchs 1964; Seinfeld & Pandis 2016; Jacobson 2005; Rivera 2011; "
-  "Turner 1966; List 1982.\n")
+  "Turner 1966; List 1982; Morton, Taylor & Turner 1956; Celik et al. 2008; Businger et al. 1971; Dyer 1974; "
+  "Högström 1988; Nieuwstadt 1984; Laws & Livesey 1978.\n")
 
 open(os.path.join(HERE, "REPORT.md"), "w").write("\n".join(x for x in L if x is not None))
 print("wrote REPORT.md", len(L), "lines")

@@ -38,30 +38,31 @@ def save(fig, name):
 # ---------------------------------------------------------------- inversion mixing
 def mixing():
     m = json.load(open(os.path.join(CFD, "runs", "mixing", "summary.json")))
-    p2 = os.path.join(CFD, "runs", "mixing", "heavy_z60_prt2", "result.json")
-    if os.path.exists(p2):
-        m["heavy_z60_prt2"] = json.load(open(p2))
-    lab = [("no_drone", "No drones"), ("quad_z30", "100 quad drones at 30 m"),
-           ("heavy_z60", "100 heavy drones at 60 m"), ("heavy_z90", "100 heavy drones at 90 m"),
-           ("heavy_z60_prt2", "100 heavy drones at 60 m, conservative (Pr_t = 2)")]
+    mb = json.load(open(os.path.join(CFD, "runs", "mixing_buoy", "summary.json")))
+    curves = [(mb, "no_drone", "No drones", "#8a8f9c", "-"),
+              (mb, "quad_z30", "100 quad drones at 30 m", CAT[1], "-"),
+              (mb if "heavy_z90" in mb else m, "heavy_z90", "100 heavy drones at 90 m", CAT[2], "-"),
+              (mb, "heavy_z60", "100 heavy drones at 60 m", CAT[0], "-"),
+              (m, "heavy_z60", "100 heavy drones at 60 m, standard k-ε", CAT[0], "--")]
     fig, ax = plt.subplots(figsize=(7.2, 3.8))
-    for i, (k, l) in enumerate(lab):
-        if k not in m:
+    for src, k, l, col, ls in curves:
+        if k not in src:
             continue
-        s = m[k]["series"]
+        s = src[k]["series"]
         y = [100 * x["z<2m"] / s[0]["z<2m"] for x in s]
         t = np.arange(len(y)) * 5
-        ax.plot(t, y, color=["#8a8f9c", CAT[1], CAT[0], CAT[2], CAT[5]][i], marker="o", ms=4,
-                ls="--" if "prt2" in k else "-", label=f"{l}: {y[-1]:.0f} %")
+        ax.plot(t, y, color=col, marker="o", ms=4, ls=ls, label=f"{l}: {y[-1]:.0f} %")
     ax.set_xlabel("Time after drones start (min)")
     ax.set_ylabel("PM at 0–2 m, % of start value")
     ax.set_ylim(75, 101)
     ax.legend(loc="lower left", fontsize=8.5)
     save(fig, "aqipilot_fig2_mixing_time.png")
+    import shutil
+    shutil.copy(os.path.join(CFD, "figures", "validation_step1b.png"), os.path.join(OUT, "aqipilot_fig9_checks.png"))
 
     import pyvista as pv
     import mixing_axi as mx
-    vt = sorted(glob.glob(os.path.join(CFD, "runs", "mixing", "heavy_z60", "VTK_all", "*", "internal.vtu")),
+    vt = sorted(glob.glob(os.path.join(CFD, "runs", "mixing_buoy", "heavy_z60", "VTK_all", "*", "internal.vtu")),
                 key=lambda f: int(f.split("_")[-1].split("/")[0]))
     if vt:
         fig, axs = plt.subplots(1, 2, figsize=(7.4, 3.4), sharey=True, constrained_layout=True)

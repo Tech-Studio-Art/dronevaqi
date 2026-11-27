@@ -22,6 +22,9 @@ mix = J(CFD, "runs", "mixing", "summary.json")
 p2 = os.path.join(CFD, "runs", "mixing", "heavy_z60_prt2", "result.json")
 if os.path.exists(p2):
     mix["heavy_z60_prt2"] = json.load(open(p2))
+MB = J(CFD, "runs", "mixing_buoy", "summary.json")
+G = J(CFD, "runs", "gci", "summary.json")
+VAL = J(CFD, "runs", "validation", "summary.json")
 road = J(CFD, "runs", "esp_road", "summary.json")["total"]
 amb = {r["case"]: r for r in J(CFD, "runs", "2d", "summary_all.json") if r["case"].startswith("espfence")}
 drones = {r["case"]: r for r in J(CFD, "runs", "drone3d", "summary.json")}
@@ -59,6 +62,27 @@ def table(rows, head=True):
 
 hz60, hz90, qz30, nod = red("heavy_z60"), red("heavy_z90"), red("quad_z30"), red("no_drone")
 prt2 = red("heavy_z60_prt2") if "heavy_z60_prt2" in mix else None
+
+
+def redb(k):
+    s_ = MB[k]["series"]
+    return 100 * (1 - s_[-1]["z<2m"] / s_[0]["z<2m"])
+
+
+def onset_min(series, thr=2.0):
+    for i, x in enumerate(series):
+        if 100 * (1 - x["z<2m"] / series[0]["z<2m"]) > thr:
+            return 5 * i
+    return None
+
+
+b60, bq, bcg1 = redb("heavy_z60"), redb("quad_z30"), redb("heavy_z60_cg1")
+b90 = redb("heavy_z90") if "heavy_z90" in MB else hz90
+t90 = onset_min(MB["heavy_z90"]["series"] if "heavy_z90" in MB else mix["heavy_z90"]["series"])
+JP, SL = VAL["jet_penetration"], VAL["surface_layer_fits"]
+GM, GF = G["mixing"], G["fence"]
+SCR = {r["K"]: r for r in VAL["fence"]["screen"]}
+CAP = VAL["fence"]["capture"]
 heavy = drones["heavy_none"]
 rd0, rdE, rdH, rdP = road["no fence"], road["ESP fence"], road["ESP fence, half migration velocity"], road["passive fence"]
 a1 = amb["espfence_U1.0_PM25"]
@@ -73,7 +97,7 @@ p_hot = max(d["p"] for d in sv["detection"]["night (stable, E-F)|10"])
 city100, city10 = city_increment(1.0), city_increment(0.1)
 best = rp[(2, 4)]
 g_night = sv["hotspot_g_per_night"] * best / 100
-mix_range = f"{min(prt2, hz60):.0f} % to {max(prt2, hz60):.0f} %" if prt2 is not None else f"up to {hz60:.0f} %"
+mix_range = f"{min(b60, b90):.0f} % to {max(b60, b90):.0f} %"
 
 TITLE = ("Drone V AQI pilot proposal: inversion mixing, electrostatic wind fences and 24x7 pollution-source "
          "surveillance to decrease winter air pollution in Delhi")
@@ -99,10 +123,12 @@ A("This report recommends a pilot project to test three control techniques. Tech
   "waste fires quickly, so that ground teams can stop them.")
 A(f"We did all the work in this report with computer simulations. The simulations use standard methods from the "
   f"scientific literature. The results are as follows. Inversion mixing with 100 heavy drones decreased street-level PM "
-  f"by {mix_range} in 30 minutes. The zone was 500 m × 500 m. An electrostatic fence between a road and a footpath decreased "
+  f"by {mix_range} in 30 minutes. The drones flew at 60 m or at 90 m over a 500 m × 500 m zone. An electrostatic fence between a road and a footpath decreased "
   f"footpath PM2.5 by {f0(100 * (1 - rdE['2.5'] / rd0['2.5']))} %. Surveillance with two patrol drones and four ground "
   f"teams prevented {best:.0f} % of the PM2.5 from a hotspot of 100 small waste fires. PM sensors cannot find these "
   f"small fires, but together the fires can add up to {city100:.0f} µg/m³ to the PM2.5 of the city.")
+A("We checked the models in three ways. We repeated the main cases on coarser and finer meshes. We compared the models "
+  "with theory and with field measurements. We calibrated one turbulence coefficient with field measurements.")
 A("These numbers are calculations, not measurements. A field pilot is necessary to measure the real values. We ask the Government "
   "of NCT of Delhi and its agencies to support a pilot in winter 2027. The three techniques can also operate in other "
   "Indian cities that have the same winter problem.")
@@ -141,16 +167,18 @@ A("All cases use a typical severe night in November: PM2.5 = 300 µg/m³ and PM1
   "separately where their behaviour is different.")
 A("B. Technique 1: inversion mixing")
 A(f"We used the open-source CFD code OpenFOAM (version v1912). The model solves time-dependent Reynolds-averaged flow "
-  f"equations (URANS) with the standard k-ε turbulence model {c('launder')}. The Boussinesq method gives the buoyancy "
+  f"equations (URANS) with k-ε turbulence models {c('launder')}. The Boussinesq method gives the buoyancy "
   f"force of the stable air layer. The inversion has a temperature increase of 5 K over the lowest 100 m. The air above "
   f"100 m is neutral and has 50 % of the street-level PM.")
 A(f"Each drone is an actuator disk with thrust equal to its weight. The heavy drone has a take-off mass of 50 kg and a "
   f"total rotor area of 5.9 m². The fleet has 100 drones on a 50 m grid. We modelled one drone in a cylindrical "
-  f"unit cell of radius 28.2 m with symmetry walls. This is the standard method for a large uniform array. The jet "
-  f"penetration agrees with the classical theory for jets in stable fluid {c('turner', 'list')}.")
-A(f"The standard k-ε model does not decrease turbulence in stable air. As a result, it calculates too much mixing. To show "
-  f"this effect, we also ran a conservative case. In this case, the turbulent Prandtl number is 2.0, which is in the "
-  f"range for stable boundary layers {c('zilitinkevich')}. A larger value gives less vertical mixing of heat and PM.")
+  f"unit cell of radius 28.2 m with symmetry walls. This is the standard method for a large uniform array. The calculated "
+  f"jet penetration agrees with the jet model of Morton, Taylor and Turner {c('mtt', 'list')}.")
+A(f"The standard k-ε model does not decrease turbulence in stable air. As a result, it calculates too much small-scale "
+  f"mixing. For the best estimate, we used the buoyant k-ε model. In this model, stable air "
+  f"decreases the turbulence. We set its buoyancy coefficient to 1.5. With this value, the model agrees with the "
+  f"measured profiles of wind and temperature in stable air {c('businger', 'dyer')}. We also give the results of the "
+  f"standard model for comparison.")
 A("C. Technique 2: electrostatic wind fence")
 A(f"We used two-dimensional steady RANS with the k-ε model. The inlet wind profile and the ground roughness follow "
   f"Richards and Hoxey {c('richards')}. PM is a passive scalar with a turbulent Schmidt number of 0.7 {c('tominaga')}. "
@@ -185,18 +213,20 @@ B.extend(fig(1, "aqipilot_fig1_mission.png",
              "Inversion-mixing operation. (1) A scout quad drone measures PM and temperature every 10 m up to 300 m. "
              "(2) The team starts mixing only if the air aloft has less PM. (3) Heavy drones at 60 m push cleaner air "
              "down to street level."))
-A(f"Figure 2 shows street-level PM (0 m to 2 m) during 30 minutes of operation. Heavy drones at 60 m decreased PM by "
-  f"{hz60:.0f} %. Most of this decrease occurred in the first 10 minutes. Heavy drones at 90 m gave a decrease of "
-  f"{hz90:.0f} %, but the effect started only after 15 minutes. Quad drones gave only {qz30:.0f} %, because their jets "
-  f"are too weak. Without drones, the change was {nod:.1f} %.")
-if prt2 is not None:
-    A(f"The conservative case (Pr<sub>t</sub> = 2.0) gave a decrease of {prt2:.0f} %. The result changed only a little. "
-      f"This shows that the jets and the return flow of the drones do most of the mixing. Small-scale turbulence does "
-      f"less. Wind replaces the air in the zone and decreases the effect. With a wind of 1 m/s, we calculate "
-      f"approximately one half of these values.")
+A(f"Figure 2 shows street-level PM (0 m to 2 m) during 30 minutes of operation. In the best estimate, heavy drones at "
+  f"60 m decreased PM by {b60:.0f} %. Most of this decrease occurred in the first 10 minutes. Heavy drones at 90 m "
+  f"decreased PM by {b90:.0f} %, but the effect started only after {t90} minutes. At 90 m, the drones push down the "
+  f"cleanest air from above the inversion.")
+A(f"The standard k-ε model gave {hz60:.0f} % at 60 m and {hz90:.0f} % at 90 m. In stable air, the jets mix less with the "
+  f"air around them on the way down. The standard model does not include this effect. With the default buoyancy "
+  f"coefficient (1.0), the decrease at 60 m was {bcg1:.0f} %. As a result, the choice of turbulence model changes the "
+  f"result by less than {max(abs(hz60 - b60), abs(hz90 - b90), abs(bcg1 - b60)) + 0.5:.0f} percentage points.")
+A(f"Quad drones gave only {bq:.0f} %, because their jets are too weak to go through the stable air. Without drones, the "
+  f"change was less than 0.2 %. Wind replaces the air in the zone and decreases the effect. With a wind of 1 m/s, we "
+  f"calculate approximately one half of these values.")
 B.extend(fig(2, "aqipilot_fig2_mixing_time.png",
              "Street-level PM during inversion mixing, as a percentage of the start value. 100 drones on a 50 m grid "
-             "over a 500 m × 500 m zone."))
+             "over a 500 m × 500 m zone. Solid lines: best estimate (buoyant k-ε). Dashed line: standard k-ε, for comparison."))
 B.extend(fig(3, "aqipilot_fig3_mixing_field.png",
              "PM distribution around one heavy drone at 60 m (triangle), before and after 30 minutes of mixing."))
 A(f"The heavy drone needs {heavy['power_mt_W'] / 1000:.1f} kW to hover. 100 drones need approximately "
@@ -250,6 +280,46 @@ A(f"Figure 8b shows the PM2.5 emission that surveillance prevents in one hotspot
 B.extend(fig(8, "aqipilot_fig7_surveillance.png",
              "Surveillance results. (a) City-wide PM2.5 added by small fires, for different areas of the city with "
              "hotspots. (b) PM2.5 emission prevented in one hotspot, for different numbers of patrol drones and ground teams."))
+
+A("D. Checks of the models")
+A(f"We did three types of checks. First, we repeated the main cases on a coarser mesh and a finer mesh, with a "
+  f"refinement ratio of 1.41. We calculated the Grid Convergence Index (GCI) {c('celik')}. Second, we compared the "
+  f"models with theory and with field measurements. Third, we calibrated one turbulence coefficient with field "
+  f"measurements. The table gives the results.")
+A(table([["Check", "Reference", "Result"],
+         ["Mesh: inversion mixing, decrease at 30 min", f"GCI {c('celik')}",
+          f"{GM['red_30min']['fine']:.1f} % on the fine mesh; GCI {GM['red_30min']['gci_fine_pct']:.1f} %"],
+         ["Mesh: inversion mixing, buoyant k-ε", "Coarse and base mesh",
+          f"{redb('heavy_z60_coarse'):.1f} % on the coarse mesh; {b60:.1f} % on the base mesh"],
+         ["Mesh: fence, footpath decrease (road case)", "GCI",
+          f"{GF['road_red_2p5m']['fine']:.1f} % on the fine mesh; GCI {GF['road_red_2p5m']['gci_fine_pct']:.1f} %"],
+         ["Mesh: fence, decrease 2 m behind (background air)", "GCI",
+          f"{GF['amb_red_2m']['fine']:.1f} % on the fine mesh; GCI {GF['amb_red_2m']['gci_fine_pct']:.1f} %"],
+         ["Jet penetration, heavy drone", f"Jet model {c('mtt')}",
+          f"CFD {JP['heavy']['depth_cfd_mean_m']:.0f} m; model {JP['heavy']['mtt_depth_by_alpha']['0.076']:.0f} m "
+          f"(range {JP['heavy']['mtt_depth_by_alpha']['0.1']:.0f} m to {JP['heavy']['mtt_depth_by_alpha']['0.05']:.0f} m)"],
+         ["Jet penetration, quad drone", f"Jet model {c('mtt')}",
+          f"CFD {JP['quad']['depth_cfd_mean_m']:.0f} m; model {JP['quad']['mtt_depth_by_alpha']['0.076']:.0f} m "
+          f"(range {JP['quad']['mtt_depth_by_alpha']['0.1']:.0f} m to {JP['quad']['mtt_depth_by_alpha']['0.05']:.0f} m)"],
+         ["Wind profile in stable air, standard k-ε", f"Field relations {c('businger', 'dyer', 'hogstrom')}",
+          f"φm = {SL['std']['intercept']:.2f} + {SL['std']['slope']:.2f} ζ (field: 1 + 4.7 ζ to 1 + 6 ζ)"],
+         ["Wind profile in stable air, buoyant k-ε (Cg = 1.5)", f"Field relations {c('businger', 'dyer', 'hogstrom')}",
+          f"φm = {SL['Cg=1.5']['intercept']:.2f} + {SL['Cg=1.5']['slope']:.2f} ζ"],
+         ["Air flow through the fence (K = 1.5)", f"Screen theory {c('laws')}",
+          f"CFD {SCR[1.5]['cfd']:.2f}; theory {SCR[1.5]['theory']:.2f} of the free wind"],
+         ["Particle capture in the fence, one pass", f"Deutsch-Anderson equation {c('mizuno')}",
+          f"CFD {100 * (1 - CAP['cfd_penetration']):.0f} %; equation {100 * (1 - CAP['deutsch_anderson']):.0f} %"]]))
+A(f"The mesh changes the main results by less than 3 %. Figure 9a shows the wind profile in stable air. We used a single "
+  f"column of air and local scaling {c('nieuwstadt')}. The standard model does not change with stability. The buoyant "
+  f"model with Cg = 1.5 agrees with the field relations. Figure 9b shows that the calculated jets stop at the depth that "
+  f"the jet model gives. Figure 9c shows that the air flow through the fence agrees with screen theory at the design "
+  f"value K = 1.5.")
+A("In one pass, the CFD fence removes fewer particles than the Deutsch-Anderson equation. As a result, the fence "
+  "results in this report are conservative.")
+B.extend(fig(9, "aqipilot_fig9_checks.png",
+             "Checks of the models. (a) Wind profile in stable air against field relations. (b) Penetration of the drone "
+             "jets against the jet model of Morton, Taylor and Turner (shaded: range of the model). (c) Air flow through "
+             "the fence against screen theory."))
 
 # ---------------------------------------------------------------- impact
 A("<a href='#impact' id='impact'>Environmental impact</a>")
@@ -324,18 +394,18 @@ A("Open waste burning occurs in cities across India. A sensor grid and patrol dr
 # ---------------------------------------------------------------- discussion
 A("<a href='#discussion' id='discussion'>Discussion</a>")
 A("A. Limits of the simulations")
-A("1. Inversion mixing: the k-ε model calculates too much mixing in stable air. The unit cell does not include wind or "
-  "the edges of the zone. As a result, the results are an upper limit. The conservative case tests only the turbulent "
-  "transport of heat and PM. In Phase 1, we will also use a turbulence model with a buoyancy term and a "
-  "three-dimensional model of the full fleet.")
+A("1. Inversion mixing: the unit cell does not include wind or the edges of the zone. The buoyant turbulence model "
+  "agrees with field data near the ground, but we did not test it for a jet in stable air. In Phase 1, we will use a "
+  "three-dimensional model of the full fleet with wind.")
 A("2. Electrostatic fence: the model is two-dimensional, so it does not include air flow around the ends of the fence. "
   "The migration velocities come from industrial practice. The model does not include dirt on the plates or calm air.")
 A("3. Surveillance: the Gaussian plume model is approximate near buildings. The emission factor of waste fires has a "
   "large range. The model assumes that a thermal camera at patrol height can find a fire that burns 100 g/h. The pilot "
   "must test this. The model does not include false alarms.")
 A("B. Why the simulations are a correct basis for a pilot")
-A("Each model uses published and tested methods. Where a model has a known error, we show its direction and we give a "
-  "conservative case. Each technique shows a clear benefit even in the conservative cases. A pilot is the correct next "
+A("Each model uses published and tested methods. We tested the effect of the mesh, and we compared the models with "
+  "theory and with field measurements (Section D of the results). Where a model has a known error, we show its "
+  "direction and we give a conservative case. Each technique shows a clear benefit even in the conservative cases. A pilot is the correct next "
   "step because it measures the real effect at a small cost before a large investment.")
 A("C. Conclusion")
 A(f"The simulations show that each technique can decrease the PM that people breathe. Inversion mixing decreases "
@@ -355,6 +425,7 @@ A(table([["Parameter", "Value"],
          ["Inversion", "+5 K over 0 m to 100 m; PM aloft 50 % of street level"],
          ["Heavy drone", "50 kg, 4 coaxial pairs of 54 in rotors, 5.9 m², hover at 60 m"],
          ["Fleet", "100 drones, 50 m grid, 500 m × 500 m"],
+         ["Turbulence model", "Mixing: buoyant k-ε, Cg = 1.5 (best estimate) and standard k-ε (comparison); fence: standard k-ε"],
          ["Fence", "6 m high, 0.5 m deep, K = 1.5, plate area 20 m²/m³"],
          ["Migration velocity", "PM2.5 0.04 m/s; coarse PM 0.12 m/s"],
          ["Waste-fire hotspot", "100 fires in 500 m × 500 m; 100 g waste/h each; 10 g PM2.5/kg; 4 h without action"],

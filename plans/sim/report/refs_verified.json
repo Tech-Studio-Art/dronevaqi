@@ -56,12 +56,12 @@
   "citation": "Launder BE, Spalding DB. The numerical computation of turbulent flows. Computer Methods in Applied Mechanics and Engineering 3(2):269-289 (1974)."
  },
  {
-  "key": "turner",
-  "doi": "10.1017/s0022112066001526",
-  "crossref_title": "Jets and plumes with negative or reversing buoyancy",
-  "cited_title": "Jets and plumes with negative or reversing buoyancy",
+  "key": "mtt",
+  "doi": "10.1098/rspa.1956.0011",
+  "crossref_title": "Turbulent gravitational convection from maintained and instantaneous sources",
+  "cited_title": "Turbulent gravitational convection from maintained and instantaneous sources",
   "match": 1.0,
-  "citation": "Turner JS. Jets and plumes with negative or reversing buoyancy. Journal of Fluid Mechanics 26(4):779-792 (1966)."
+  "citation": "Morton BR, Taylor GI, Turner JS. Turbulent gravitational convection from maintained and instantaneous sources. Proceedings of the Royal Society of London. Series A. Mathematical and Physical Sciences 234(1196):1-23 (1956)."
  },
  {
   "key": "list",
@@ -72,12 +72,20 @@
   "citation": "List EJ. Turbulent Jets and Plumes. Annual Review of Fluid Mechanics 14(1):189-212 (1982)."
  },
  {
-  "key": "zilitinkevich",
-  "doi": "10.1007/s10546-012-9768-8",
-  "crossref_title": "A Hierarchy of Energy- and Flux-Budget (EFB) Turbulence Closure Models for Stably-Stratified Geophysical Flows",
-  "cited_title": "A hierarchy of energy- and flux-budget (EFB) turbulence closure models for stably-stratified geophysical flows",
+  "key": "businger",
+  "doi": "10.1175/1520-0469(1971)028<0181:fprita>2.0.co;2",
+  "crossref_title": "Flux-Profile Relationships in the Atmospheric Surface Layer",
+  "cited_title": "Flux-profile relationships in the atmospheric surface layer",
   "match": 1.0,
-  "citation": "Zilitinkevich SS, Elperin T, Kleeorin N, Rogachevskii I, Esau I. A Hierarchy of Energy- and Flux-Budget (EFB) Turbulence Closure Models for Stably-Stratified Geophysical Flows. Boundary-Layer Meteorology 146(3):341-373 (2012)."
+  "citation": "Businger JA, Wyngaard JC, Izumi Y, Bradley EF. Flux-Profile Relationships in the Atmospheric Surface Layer. Journal of the Atmospheric Sciences 28(2):181-189 (1971)."
+ },
+ {
+  "key": "dyer",
+  "doi": "10.1007/bf00240838",
+  "crossref_title": "A review of flux-profile relationships",
+  "cited_title": "A review of flux-profile relationships",
+  "match": 1.0,
+  "citation": "Dyer AJ. A review of flux-profile relationships. Boundary-Layer Meteorology 7(3):363-372 (1974)."
  },
  {
   "key": "richards",
@@ -136,20 +144,20 @@
   "citation": "Hagler GSW, Tang W, Freeman MJ, Heist DK, Perry SG, Vette AF. Model evaluation of roadside barrier impact on near-road air pollution. Atmospheric Environment 45(15):2522-2530 (2011)."
  },
  {
-  "key": "hanna",
-  "doi": "10.2172/5591108",
-  "crossref_title": "Handbook on atmospheric diffusion",
-  "cited_title": "Handbook on atmospheric diffusion",
-  "match": 1.0,
-  "citation": "Hanna SR, Briggs GA, Hosker RPJ. Handbook on atmospheric diffusion. Office of Scientific and Technical Information (OSTI) (1982)."
- },
- {
   "key": "wiedinmyer",
   "doi": "10.1021/es502250z",
   "crossref_title": "Global Emissions of Trace Gases, Particulate Matter, and Hazardous Air Pollutants from Open Burning of Domestic Waste",
   "cited_title": "Global emissions of trace gases, particulate matter, and hazardous air pollutants from open burning of domestic waste",
   "match": 1.0,
   "citation": "Wiedinmyer C, Yokelson RJ, Gullett BK. Global Emissions of Trace Gases, Particulate Matter, and Hazardous Air Pollutants from Open Burning of Domestic Waste. Environmental Science & Technology 48(16):9523-9530 (2014)."
+ },
+ {
+  "key": "hanna",
+  "doi": "10.2172/5591108",
+  "crossref_title": "Handbook on atmospheric diffusion",
+  "cited_title": "Handbook on atmospheric diffusion",
+  "match": 1.0,
+  "citation": "Hanna SR, Briggs GA, Hosker RPJ. Handbook on atmospheric diffusion. Office of Scientific and Technical Information (OSTI) (1982)."
  },
  {
   "key": "snyder",
@@ -174,6 +182,38 @@
   "cited_title": "Vineyard frost protection with upward-blowing wind machines",
   "match": 1.0,
   "citation": "Battany MC. Vineyard frost protection with upward-blowing wind machines. Agricultural and Forest Meteorology 157:39-48 (2012)."
+ },
+ {
+  "key": "celik",
+  "doi": "10.1115/1.2960953",
+  "crossref_title": "Procedure for Estimation and Reporting of Uncertainty Due to Discretization in CFD Applications",
+  "cited_title": "Procedure for estimation and reporting of uncertainty due to discretization in CFD applications",
+  "match": 1.0,
+  "citation": "Celik IB, Ghia U, Roache PJ, Freitas CJ, Coleman H, Raad PE. Procedure for Estimation and Reporting of Uncertainty Due to Discretization in CFD Applications. Journal of Fluids Engineering 130(7):078001 (2008)."
+ },
+ {
+  "key": "hogstrom",
+  "doi": "10.1007/bf00119875",
+  "crossref_title": "Non-dimensional wind and temperature profiles in the atmospheric surface layer: A re-evaluation",
+  "cited_title": "Non-dimensional wind and temperature profiles in the atmospheric surface layer: A re-evaluation",
+  "match": 1.0,
+  "citation": "Högström U. Non-dimensional wind and temperature profiles in the atmospheric surface layer: A re-evaluation. Boundary-Layer Meteorology 42(1-2):55-78 (1988)."
+ },
+ {
+  "key": "nieuwstadt",
+  "doi": "10.1175/1520-0469(1984)041<2202:ttsots>2.0.co;2",
+  "crossref_title": "The Turbulent Structure of the Stable, Nocturnal Boundary Layer",
+  "cited_title": "The turbulent structure of the stable, nocturnal boundary layer",
+  "match": 1.0,
+  "citation": "Nieuwstadt FTM. The Turbulent Structure of the Stable, Nocturnal Boundary Layer. Journal of the Atmospheric Sciences 41(14):2202-2216 (1984)."
+ },
+ {
+  "key": "laws",
+  "doi": "10.1146/annurev.fl.10.010178.001335",
+  "crossref_title": "Flow Through Screens",
+  "cited_title": "Flow through screens",
+  "match": 1.0,
+  "citation": "Laws EM, Livesey JL. Flow Through Screens. Annual Review of Fluid Mechanics 10(1):247-266 (1978)."
  },
  {
   "key": "boelter",
