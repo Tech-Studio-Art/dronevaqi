@@ -257,9 +257,9 @@ def fig6_sections(S, S2=None):
 
 # ---------------------------------------------------------------- 7 maps
 def fig7_maps(S, S2=None):
-    rows = [(S, "K1", "K1, wind 1 m/s"), (S, "K4", "K4, wind 1 m/s")]
+    rows = [(S, "K1", "K1, 1 m/s"), (S, "K4", "K4, 1 m/s")]
     if S2 and "K1" in S2["cases"]:
-        rows.append((S2, "K1", "K1, wind 2 m/s"))
+        rows.append((S2, "K1", "K1, 2 m/s"))
     rows = [r for r in rows if r[1] in r[0]["cases"]]
     fig, axs = plt.subplots(len(rows), 1, figsize=(7.6, 2.75 * len(rows)), sharex=True, squeeze=False)
     lev = [-2, 2, 5, 10, 15, 20, 25, 30]
@@ -270,7 +270,7 @@ def fig7_maps(S, S2=None):
         c = src["cases"][k]
         im = ax.pcolormesh(x, yy, full(c["map"]), cmap=SEQ, norm=norm, shading="nearest", rasterized=True)
         ax.add_patch(Rectangle((0, -250), 500, 500, fc="none", ec=INK, lw=0.8))
-        ax.set_title(f"{lab}, {c['minutes']:.0f} min: zone mean decrease {c['zone_last']:.1f} %, largest {c['max_ground']:.0f} %", fontsize=8.3)
+        ax.set_title(f"{lab}, {c['minutes']:.0f} min: zone mean {c['zone_last']:.1f} %, largest {c['max_ground']:.0f} %", fontsize=8.0, loc="left")
         ax.set_aspect("equal")
         ax.set_xlim(X0, X1)
         ax.set_ylim(-Y1, Y1)

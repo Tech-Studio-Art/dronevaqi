@@ -111,6 +111,21 @@ def at(case, xx, src=S):
 xk1, rk1 = xpeak(K1)
 xk4, rk4 = xpeak(K4)
 
+
+def plume_end(case, src=S, level=5.0):
+    """Largest x (m) where the along-wind street-level decrease is more than `level` %."""
+    xs = [xx for xx, v in zip(src["x"], case["profile_x"]) if v > level]
+    return max(xs) if xs else 0.0
+
+
+Lk1, Lk4 = plume_end(K1), plume_end(K4)
+zmix_min = min(C[k]["mix_bottom_m"] for k in ("F100", "C50", "R60", "R600"))
+
+
+def out_share(case):
+    """Share (%) of the total street-level benefit that is outside the zone."""
+    return 100 * (1 - case["benefit_zone_equiv"]["zone"] / case["benefit_total"]) if case["benefit_total"] > 0 else 0.0
+
 TITLE = ("Drone V AQI report 2: a fleet of mixing drones in wind. Three-dimensional simulation of zone edges, "
          "downwind benefit, drone placement and rhythm")
 B = []
@@ -128,22 +143,23 @@ A(f"Report 1 calculated the effect of inversion mixing with one drone in a unit 
   f"centre of a very large fleet in calm air. It has no wind and no zone edges. In this report, we simulated a full "
   f"fleet of heavy drones over a 500 m × 500 m zone in three dimensions, with wind.")
 A(f"Wind changes the result completely. In a light wind of 1 m/s at 10 m height, the jet of each drone bends over. "
-  f"The jets mix only the air from approximately 35 m to 70 m. With drones on a 50 m grid, street-level PM did not "
-  f"change, with 50 or 100 drones and with a wind of 1 m/s or 2 m/s. The Briggs equation for jets in a stable "
+  f"The jets mix only the air from approximately {f0(zmix_min)} m to 70 m. With drones on a 50 m grid, street-level PM did not "
+  f"change. This was true for 50 and 100 drones and for a wind of 1 m/s and 2 m/s. The Briggs equation for jets in a stable "
   f"cross-wind gives the same result.")
 A(f"When the drones fly in a tight cluster, their jets join and make one strong jet. "
   + (f"One cluster of 100 drones decreased street-level PM by {f1(K1['zone_last'])} % over the zone and by up to "
      f"{f0(K1['max_ground'])} % downwind of the cluster. " if reach(K1) or K1['zone_last'] > 1 else
      f"One cluster of 100 drones decreased street-level PM by only {f1(K1['zone_last'])} % over the zone. ")
-  + f"Four clusters of 25 drones gave {f1(K4['zone_last'])} %. The benefit starts downwind of the cluster. As a result, "
-  f"the clusters must be upwind of the area that we want to protect.")
+  + f"Four clusters of 25 drones gave {f1(K4['zone_last'])} %. The benefit is largest within approximately 200 m "
+  f"downwind of each cluster. As a result, the clusters must be at the upwind edge of the area that we want to "
+  f"protect. At a wind of 2 m/s, the cluster of 100 drones gave only {f1(K1b['zone_last'])} %.")
 A(f"We also tested a rhythm in which the drones alternate between two sets of sites. In calm air, a slow rhythm "
-  f"(5 minutes at each set) gave a mean decrease of {f0(pR6['mean_30min_pct'])} % over 30 minutes with the energy of "
-  f"50 drones. 100 drones in continuous operation gave {f0(pF['mean_30min_pct'])} %, and 50 drones at fixed sites gave "
+  f"(5 minutes at each set) used the energy of 50 drones. It gave a mean decrease of {f0(pR6['mean_30min_pct'])} % "
+  f"over 30 minutes. 100 drones in continuous operation gave {f0(pF['mean_30min_pct'])} %, and 50 drones at fixed sites gave "
   f"{f0(pC['mean_30min_pct'])} %. A fast rhythm (30 s) gave almost no effect.")
 A("These are simulation results. The pilot must measure the wind at drone height before each operation. In calm "
-  "air, a spread fleet with a slow rhythm is correct. In light wind, the drones must fly in clusters upwind of the "
-  "target area.")
+  "air, a spread fleet with a slow rhythm is correct. In light wind, the drones must fly in clusters at the upwind "
+  "edge of the target area. In a wind of 2 m/s or more, inversion mixing gives little benefit.")
 
 # ---------------------------------------------------------------- introduction
 A("<a href='#introduction' id='introduction'>Introduction</a>")
@@ -162,7 +178,7 @@ A("B. Questions of this study")
 A("1. Zone edges: how much of the unit-cell effect remains in a zone of 500 m × 500 m with wind?")
 A("2. Downwind benefit: how far does the benefit go downwind of the zone?")
 A("3. Placement: where must the drones be, relative to the wind and to the area that we want to protect?")
-A("4. Rhythm: do neighbouring drones that alternate slowly give more mixing for the same energy?")
+A("4. Rhythm: do adjacent drones that alternate slowly give more mixing for the same energy?")
 A("C. A drone fleet is similar to a wind farm")
 A(f"A large group of rotors in the lower atmosphere is a known problem in wind energy. In a wind farm, the first rows "
   f"get the undisturbed wind. The rows behind them operate in the wakes of the first rows {c('stevens', 'porteagel20')}. "
@@ -236,7 +252,7 @@ A(table([["Case", "Drones", "Layout", "Schedule", "Wind U10"],
 A("Group A and group B make a checkerboard pattern (Figure 1). In the rhythm cases, 50 drones move between the A "
   "sites and the B sites. Two groups of 50 drones that take turns give the same flow. A drone that hovers cannot stop "
   "its jet, so a change of site is the practical form of a rhythm. In a cluster, the drones are 6 m to 7 m apart. "
-  "This is possible with satellite positioning of centimetre accuracy.")
+  "This is possible with satellite navigation that has centimetre accuracy.")
 A("We ran C50, R600 and R60 with the original turbulence model for 15 minutes. We stopped them because street-level "
   "PM did not change. F100 at 2 m/s also used the original model for 15 minutes. All other cases used the changed "
   "model for 30 minutes.")
@@ -250,11 +266,11 @@ A("<a href='#results' id='results'>Results</a>")
 A("A. Checks of the drone model")
 A(f"Figure 2 compares four disk sizes in a periodic cell without wind with the resolved disk of report 1. A disk of "
   f"156 m² delayed the effect by 10 to 15 minutes: at 15 minutes, the decrease was only {f0(big5)} %. The one-column "
-  f"disk (39 m²) gave the same timing as the resolved disk. After 30 minutes, it gave {f1(cell)} % against "
+  f"disk (39 m²) started at the same time as the resolved disk. After 30 minutes, it gave {f1(cell)} % against "
   f"{f1(resolved)} %. As a result, the fleet mesh calculates approximately {f0(100 * (cell / resolved - 1))} % more "
   f"decrease than the resolved disk. A smaller time step changed the 30-minute result by less than 0.2 percentage "
-  f"points. Without drones, the changed and the original turbulence models gave the same street-level PM within "
-  f"{refchk:.2f} %.")
+  f"points. Without drones, the difference of street-level PM between the changed and the original turbulence "
+  f"models was less than 0.001 %.")
 B.extend(fig(2, "aqifleet_fig2_disk_check.png",
              "Check of the drone disk in a periodic cell without wind. Street-level PM as a percentage of the start "
              "value, for four disk sizes and for the resolved disk of report 1."))
@@ -267,12 +283,12 @@ A(f"Figure 3 shows the rhythm cases in calm air. 100 drones in continuous operat
 A(f"With the slow rhythm (R600), the same 50 drones gave {f0(pR6['decrease_pct'][2])} % after 10 minutes and "
   f"{f1(pR6['decrease_30min_pct'])} % after 30 minutes. The mean decrease over 30 minutes was "
   f"{f1(pR6['mean_30min_pct'])} %. This is {f0(100 * pR6['mean_30min_pct'] / pF['mean_30min_pct'])} % of the value for 100 "
-  f"drones ({f1(pF['mean_30min_pct'])} %) and {pR6['mean_30min_pct'] / pC['mean_30min_pct']:.1f} times the value for 50 "
-  f"drones at fixed sites ({f1(pC['mean_30min_pct'])} %).")
+  f"drones ({f1(pF['mean_30min_pct'])} %). It is {pR6['mean_30min_pct'] / pC['mean_30min_pct']:.1f} times the value for "
+  f"50 drones at fixed sites ({f1(pC['mean_30min_pct'])} %).")
 A(f"The fast rhythm (R60) gave only {f1(pR60['decrease_30min_pct'])} % after 30 minutes. A jet needs a few minutes to "
   f"reach the ground. When the drones move every 30 s, the jets stop before they reach the ground. As a result, a "
-  f"useful rhythm has a period of several minutes. A pulsed jet can mix faster than a steady jet when the pulse "
-  f"period is near the period of the large eddies of the jet {c('choutapalli')}. For a drone jet, this period is "
+  f"useful rhythm has a period of several minutes. A pulsed jet can mix faster than a steady jet. This occurs "
+  f"when the pulse period is near the period of the large eddies of the jet {c('choutapalli')}. For a drone jet, this period is "
   f"approximately 1 s. URANS cannot show this effect, and drones cannot change their thrust this fast.")
 B.extend(fig(3, "aqifleet_fig3_rhythm.png",
              "Rhythm in calm air. Decrease of street-level PM in a periodic cell with the checkerboard of sites A and B. "
@@ -282,19 +298,19 @@ A("C. Drones on a 50 m grid in wind")
 dmax = max([abs(C[k]['zone_last']) for k in ('F100', 'C50', 'R60', 'R600')] + [abs(F100b['zone_last'])])
 lmax = max([C[k]['max_ground'] for k in ('F100', 'C50', 'R60', 'R600')] + [F100b['max_ground']])
 A(f"In all cases with drones on a 50 m grid, street-level PM did not change. At a wind of 1 m/s and at 2 m/s, the "
-  f"zone-mean decrease was less than {max(0.1, round(dmax + 0.05, 1)):.1f} %, and the largest local decrease was "
+  f"zone-mean decrease was less than {max(0.1, round(dmax + 0.05, 1)):.1f} %. The largest local decrease was "
   f"{f1(lmax)} %. The rhythm cases R600 and R60 gave the same result as C50.")
 A(f"Figure 4a shows why. In calm air, the jets mix the full layer from the ground to 75 m. In wind, the jets mix "
   f"only the layer from approximately {f0(min(C[k]['mix_bottom_m'] for k in ('F100', 'C50')))} m to 70 m. Figure 4b "
   f"shows the jets in the wind. Each jet bends over and stops approximately {f0(sum(disp_pen) / len(disp_pen))} m "
-  f"below the drone. Below 30 m, the air does not change.")
+  f"below the drone. Below approximately {f0(zmix_min)} m, the air does not change.")
 B.extend(fig(4, "aqifleet_fig4_dispersed.png",
              "Drones on a 50 m grid. (a) Zone-mean change of PM with height after 30 minutes (15 minutes for C50 and "
              "for the wind of 2 m/s). (b) Change of PM and flow in a vertical section through one row of drones "
              "(squares), wind 1 m/s, 30 minutes."))
 A(f"The Briggs equation for the rise of a momentum jet in a stable cross-wind is Δh = 1.5 (Fm / (U N))^(1/3) "
-  f"{c('briggs72', 'hanna')}. Fm is the momentum flux of the jet, U is the wind speed and N is the buoyancy frequency "
-  f"of the inversion ({NBV:.3f} 1/s). For one drone, the equation gives {f0(b1)} m at {f1(U60)} m/s and {f0(b1b)} m at "
+  f"{c('briggs72', 'hanna')}. Fm is the momentum flux of the jet, and U is the wind speed. N is the "
+  f"buoyancy frequency of the inversion ({NBV:.3f} 1/s). For one drone, the equation gives {f0(b1)} m at {f1(U60)} m/s and {f0(b1b)} m at "
   f"{f1(U60b)} m/s. This is the depth of the jet centre. The lower edge of the jet is deeper, so the CFD depth of "
   f"approximately {f0(sum(disp_pen) / len(disp_pen))} m agrees with the equation (Figure 5).")
 A(f"The equation also shows the solution. The depth increases with the cube root of the momentum flux. When N drones "
@@ -317,24 +333,31 @@ B.extend(fig(6, "aqifleet_fig6_sections.png",
 A(f"Figure 7 shows the decrease of street-level PM. With K1, the zone-mean decrease was {f1(K1['zone_last'])} %, and "
   f"the largest local decrease was {f0(K1['max_ground'])} %. The area with a decrease of more than 10 % was "
   f"{f1(K1['area_gt10_ha'])} ha. The area with more than 5 % was {f1(K1['area_gt5_ha'])} ha. With K4, the zone-mean "
-  f"decrease was {f1(K4['zone_last'])} %, and the largest local decrease was {f0(K4['max_ground'])} %.")
+  f"decrease was {f1(K4['zone_last'])} %, and the largest local decrease was {f0(K4['max_ground'])} %. The areas with "
+  f"more than 10 % and more than 5 % were {f1(K4['area_gt10_ha'])} ha and {f1(K4['area_gt5_ha'])} ha.")
 B.extend(fig(7, "aqifleet_fig7_maps.png",
              "Decrease of street-level PM after 30 minutes. The square is the fleet zone. The clusters are at its "
              "upwind edge (left)."))
 A(f"Figure 8a shows the effect along the wind. The benefit is small at the upwind edge and largest at "
-  f"x = {f0(xk1)} m for K1. It continues downwind of the zone: in the 500 m downwind of the zone, the mean decrease "
-  f"was {f1(K1['downwind_500m'])} % for K1 and {f1(K4['downwind_500m'])} % for K4. The total benefit outside the zone was "
-  f"{f0(100 * (1 - K1['benefit_zone_equiv']['zone'] / K1['benefit_total']) if K1['benefit_total'] > 0 else 0)} % of the "
-  f"total benefit of K1.")
+  f"x = {f0(xk1)} m for K1 and x = {f0(xk4)} m for K4. The decrease is more than 5 % up to x = {f0(Lk1)} m for K1 and "
+  f"x = {f0(Lk4)} m for K4. After the jet reaches the ground, the warm jet air rises again, because it is lighter "
+  f"than the cold air near the ground (Figure 6). As a result, the strong benefit is near the cluster. A weak "
+  f"benefit continues downwind of the zone: in the 500 m downwind of the zone, the mean decrease "
+  f"was {f1(K1['downwind_500m'])} % for K1 and {f1(K4['downwind_500m'])} % for K4. The benefit outside the zone was "
+  f"{f0(out_share(K1))} % of the total benefit for K1 and {f0(out_share(K4))} % for K4.")
 A(f"Figure 8c shows the effect across the wind. The benefit of K1 is largest on the wind axis and decreases to the "
   f"sides. In the zone, the central strip (within 125 m of the axis) had {f1(K1['centre_strip'])} % and the outer "
-  f"strips had {f1(K1['edge_strip'])} %. The four clusters of K4 give a wider but weaker benefit "
-  f"({f1(K4['centre_strip'])} % and {f1(K4['edge_strip'])} %).")
+  f"strips had {f1(K1['edge_strip'])} %. The four clusters of K4 cover the full width of the zone "
+  f"({f1(K4['centre_strip'])} % and {f1(K4['edge_strip'])} %). As a result, K4 gave approximately twice the zone-mean "
+  f"benefit of K1.")
 A(f"Figure 8b shows the best position of a 500 m × 500 m target area. For K1, the best target area "
   f"{place(K1)[0]}, with a mean decrease of {f1(K1['best_window'])} %. For K4, the best target area {place(K4)[0]}, "
   f"with {f1(K4['best_window'])} %. As a result, the clusters must be {place(K1)[1]}.")
 if K1b:
-    A(f"At a wind of 2 m/s, K1 gave {f1(K1b['zone_last'])} % in the zone and {f1(K1b['downwind_500m'])} % in the 500 m "
+    A(f"At a wind of 2 m/s, the jet of K1 mixed the air down to approximately {f0(K1b['mix_bottom_m'])} m. The Briggs "
+      f"equation gives a deeper jet ({f0(b100b)} m below the drones). The coarse block of the cluster makes a slower "
+      f"jet than real drones (Discussion). "
+      f"K1 gave {f1(K1b['zone_last'])} % in the zone and {f1(K1b['downwind_500m'])} % in the 500 m "
       f"downwind of the zone. The largest local decrease was {f0(K1b['max_ground'])} %. The best target area "
       f"{place(K1b)[0]}, with {f1(K1b['best_window'])} %.")
 B.extend(fig(8, "aqifleet_fig8_profiles.png",
@@ -343,7 +366,10 @@ B.extend(fig(8, "aqifleet_fig8_profiles.png",
 A(f"Figure 9 shows the zone-mean decrease against time. "
   + (f"With K1, the effect started after approximately {next((int(t) for t, v in zip(K1['t_min'], K1['series']) if v > 1.0), 30)} "
      f"minutes. " if K1['series'][-1] > 1.0 else "")
-  + f"In calm air, the unit cell gave {f1(cell)} % on the same mesh.")
+  + f"The zone-mean decrease of K4 changed between {f0(min(K4['series'][1:]))} % and {f0(max(K4['series'][1:]))} %, "
+  f"because the flow downwind of the clusters is unsteady. The mean over 30 minutes was {f1(K4['zone_mean'])} % for "
+  f"K4 and {f1(K1['zone_mean'])} % for K1. In calm air, the unit cell gave {f1(cell)} % after 30 minutes and "
+  f"{f1(pF['mean_30min_pct'])} % as a mean, on the same mesh.")
 B.extend(fig(9, "aqifleet_fig9_time.png", "Zone-mean decrease of street-level PM against time."))
 A(table([["Case", "Wind U10", "Zone, 30 min", "Mean, 30 min", "Downwind 500 m", "Largest local", "Area > 10 %"],
          ["Unit cell, 100 drones", "Calm", f"{f1(cell)} %", f"{f1(pF['mean_30min_pct'])} %", "-", "-", "Whole zone"],
@@ -359,19 +385,20 @@ A(table([["Case", "Wind U10", "Zone, 30 min", "Mean, 30 min", "Downwind 500 m", 
 # ---------------------------------------------------------------- discussion
 A("<a href='#discussion' id='discussion'>Discussion</a>")
 A("A. Answers to the four questions")
-A(f"1. Zone edges: in wind, the effect of drones on a 50 m grid is zero at street level, so their edges do not "
-  f"change the result. With a cluster, the benefit has the shape of a plume that starts at the cluster and goes "
+A(f"1. Zone edges: in wind, drones on a 50 m grid have no effect at street level. As a result, their edges do "
+  f"not change the result. With a cluster, the benefit has the shape of a plume that starts at the cluster and goes "
   f"downwind. The sides of the zone between the plumes get little benefit, and four clusters cover the width of the "
   f"zone better than one cluster. We did not simulate a zone with edges in calm air.")
-A(f"2. Downwind benefit: with a cluster, the benefit continues downwind of the zone. For K1, "
-  f"{f0(100 * (1 - K1['benefit_zone_equiv']['zone'] / K1['benefit_total']) if K1['benefit_total'] > 0 else 0)} % of the "
-  f"total benefit was outside the zone after 30 minutes.")
+A(f"2. Downwind benefit: with a cluster, a weak benefit of approximately 2 % continues for at least 500 m downwind "
+  f"of the zone. After 30 minutes, {f0(out_share(K1))} % (K1) and {f0(out_share(K4))} % (K4) of the total benefit was "
+  f"outside the zone.")
 A(f"3. Placement: measure the wind at the drone height before each operation. In calm air, use the spread fleet of "
-  f"report 1. In light wind, fly the drones in clusters across the wind and put the clusters {place(K1)[1]}. One "
-  f"large cluster reaches the ground more easily than several small clusters, but several clusters cover a wider "
-  f"area.")
-A(f"4. Rhythm: in calm air, a slow rhythm of approximately 5 minutes gives almost the effect of 100 drones with the "
-  f"energy of 50 drones ({f0(50 * POWER_KW)} kW instead of {f0(100 * POWER_KW)} kW). A fast rhythm of 30 s does not "
+  f"report 1. In light wind, fly the drones in clusters across the wind. Put the clusters {place(K1)[1]}. In our "
+  f"cases, four clusters of 25 drones gave twice the zone-mean benefit of one cluster of 100 drones. The four "
+  f"clusters covered the full width of the zone. A large cluster reaches the ground in a stronger wind than a small cluster. "
+  f"In a wind of 2 m/s or more, even a cluster of 100 drones gives little benefit.")
+A(f"4. Rhythm: in calm air, a slow rhythm of approximately 5 minutes gives almost the effect of 100 drones. It "
+  f"uses the energy of 50 drones ({f0(50 * POWER_KW)} kW instead of {f0(100 * POWER_KW)} kW). A fast rhythm of 30 s does not "
   f"work. In wind, the rhythm does not help drones on a 50 m grid, because their jets do not reach the ground.")
 A("B. Limits of the simulations")
 A(f"1. Turbulence model: URANS with the k-ε model calculates the mean flow, not the individual eddies. A study of "
@@ -388,13 +415,18 @@ A("4. Wind: the wind is steady and has one direction, along the rows of drones. 
   "direction. A change of the wind direction moves the area of benefit. The cluster must then move.")
 A("5. Domain: we simulated one half of the zone, so the flow is symmetric about the wind axis. The 30-minute "
   "operation shows the start of the operation, not a full night.")
+A("6. Cluster flight: in a cluster, the drones are 6 m to 7 m apart and fly in the joined jet of their neighbours. "
+  "The pilot must test the safe distance between the drones and the effect of the joined jet on their thrust.")
 A("C. Conclusion")
 A(f"Wind is the most important condition for inversion mixing. In calm air, a spread fleet decreases street-level PM "
   f"by approximately {f0(cell)} % in 30 minutes, and a slow rhythm saves half of the energy. In a light wind of "
   f"1 m/s, the jets of single drones bend over and do not reach street level. A cluster of drones makes one strong "
-  f"jet that can reach street level"
-  + (f" and decrease PM by up to {f0(K1['max_ground'])} % in a plume downwind of the cluster." if K1['max_ground'] > 2 else ".")
-  + " The pilot must test these results with measurements of the wind and of PM at different heights.")
+  f"jet that can reach street level."
+  + (f" It decreased PM by up to {f0(K1['max_ground'])} % in a plume downwind of the cluster." if K1['max_ground'] > 2 else "")
+  + f" Four clusters of 25 drones decreased the zone-mean PM by {f0(K4['zone_last'])} % after 30 minutes. At 2 m/s, the "
+  f"benefit was small. Report 1 estimated that a wind of 1 m/s halves the effect. For a spread fleet, the effect is "
+  f"zero, and clusters are necessary. The pilot must test these results with measurements of the wind and of PM at "
+  f"different heights.")
 
 # ---------------------------------------------------------------- references
 A("<a href='#references' id='references'>References</a>")
